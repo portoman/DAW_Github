@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Página Web Alfonso Porto</title>
+    <style>
+      /*Fondo*/
+      body {
+        background-image: url("BlocPattern-feature.png");
+        background-size: 100%;
+      }
+      /*Título*/
+      header {
+        background-color: aliceblue;
+        text-align: center;
+        margin-left: 400px;
+        margin-right: 400px;
+        border-radius: 20px;
+      }
+      h1 {
+        padding: 5px;
+        font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+        text-shadow: 1px 1px 1px blue;
+        font-size: 40px;
+      }
+      /*Maquetado datos y imagen*/
+      #datos,
+      #fotoAlfonso {
+        float: left;
+        margin-left: 80px;
+        margin-top: 5px;
+        border-radius: 20px;
+      }
+      /*Formato datos*/
+      #datos {
+        background-color: whitesmoke;
+        width: 40%;
+        margin: 5px 50px;
+        padding-left: 100px;
+        font-size: 25px;
+        border: 5px black solid;
+        box-shadow: 3px 3px 3px black;
+      }
+      h3 {
+        margin-top: 10px;
+        margin-bottom: 0px;
+        font-family: Arial, Helvetica, sans-serif;
+        color: cadetblue;
+      }
+      ul {
+        margin-top: 5px;
+        color: gray;
+      }
+      #aficiones {
+        float: left;
+      }
+      .imgAficiones{
+        margin-left:100px;
+      }
+
+      /*Formato foto Alfonso*/
+      #fotoAlfonso {
+        margin-top: 80px;
+        margin-left: 160px;
+        border: 15px solid black;
+      }
+      
+      /*Pie de página*/
+      footer {
+        background-color: aquamarine;
+        clear: both;
+        float: none;
+        margin-top: 775px;
+        text-align: center;
+        font-size: 30px;
+      }
+      a {
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Bienvenido a la página web de Alfonso Porto</h1>
+    </header>
+    <section id="datos">
+      <h3>Formación académica:</h3>
+      <ul>
+        <li>Ciclo Superior Desarrollo Aplicaciones Web.(En Curso)</li>
+        <li>Ingeniería Técnica Industrial</li>
+      </ul>
+      <h3>Aficiones:</h3>
+      <ul id="aficiones">
+        <li>Senderismo</li>
+        <img class="imgAficiones" src="senderismo-redes.jpg" width="200px" height="130px" />
+        <li>Natación</li>
+        <img class="imgAficiones" src="natacion.jpg" width="200px" height="130px" />
+        <li>Lectura</li>
+        <img class="imgAficiones" src="Club de Lectura.jpg" width="200px" height="130px" />
+      </ul>
+    </section>
+    <img id="fotoAlfonso" src="Alfonso_Redes.PNG" width="500px" />
+    <footer>
+      <a href="https://www.google.com" target="_blank"> Google</a>
+      ||
+      <a href="https://www.facebook.com" target="_blank"> Facebook</a>
+    </footer>
+  </body>
+</html>

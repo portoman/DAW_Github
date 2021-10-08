@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Apartado 3 - Formulario</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+    <h1>Formulario</h1>
+    <form
+      name="formularioHotel"
+      action="mailto:reservas@mihotel.com"
+      method="post"
+      enctype="text/plain"
+    >
+      <table>
+        <caption>
+          O MEU HOTEL - Reserva en liña
+        </caption>
+        <tr>
+          <td class="definicion"><label for="nome">Nome:</label></td>
+          <td>
+            <input class="datos" type="text" id="nome" size="20" />
+          </td>
+        </tr>
+        <tr>
+          <td class="definicion"><label for="apelidos">Apelidos:</label></td>
+          <td>
+            <input class="datos" type="text" id="apelidos" size="20" />
+          </td>
+        </tr>
+        <tr>
+          <td class="definicion"><label for="telefono">Teléfono:</label></td>
+          <td>
+            <input class="datos" type="text" id="telefono" size="20" />
+          </td>
+        </tr>
+        <tr>
+          <td class="definicion">
+            <label for="enderezo_electronico">Enderezo electrónico:</label>
+          </td>
+          <td>
+            <input
+              class="datos"
+              type="text"
+              id="enderezo_electronico"
+              size="20"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td class="definicion">
+            <label for="noites">Número de noites:</label>
+          </td>
+          <td>
+            <input class="datos" type="number" id="noites" size="20" />
+          </td>
+        </tr>
+        <tr>
+          <td class="definicion">
+            <label for="dia_mes"></label>Data de entrada:
+          </td>
+          <td id="fecha">
+            <input class="datos" type="date" id="dia_mes" size="20" />
+          </td>
+        </tr>
+        <tr>
+          <td id="radio">
+            <strong>Cuarto:</strong>
+            <br /><input
+              type="radio"
+              id="simple"
+              name="cuarto"
+              value="simple"
+            /><label for="simple">Simple</label><br /><input
+              type="radio"
+              id="dobre"
+              name="cuarto"
+              value="dobre"
+            /><label for="dobre">Dobre</label><br /><input
+              type="radio"
+              id="css"
+              name="cuarto"
+              value="matrimonio"
+            /><label for="matrimonio">Matrimonio</label>
+          </td>
+          <td id="checkbox">
+            Almorzo<input type="checkbox" name="conforme" /><br />
+            Comida<input type="checkbox" name="conforme" /><br />
+            Cama supletoria<input type="checkbox" name="conforme" />
+          </td>
+        </tr>
+        <tr>
+          <td id="tdText" colspan="2">
+            <textarea
+              id="comentarios"
+              name="Comentarios"
+              placeholder="Comentarios"
+            ></textarea>
+          </td>
+        </tr>
+        <tr>
+          <td><input id="reset" type="reset" value="Reset" /></td>
+          <td><input id="enviar" type="submit" value="Enviar" /></td>
+        </tr>
+      </table>
+    </form>
+  </body>
+</html>
