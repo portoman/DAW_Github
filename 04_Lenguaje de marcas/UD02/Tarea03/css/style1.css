@@ -1,0 +1,50 @@
+h1{
+    text-align: center;
+}
+
+*{
+    margin: auto;
+}
+
+table{
+    margin-top: 30px;
+    border-collapse: collapse;
+    caption-side: bottom;
+    table-layout: fixed;
+    width: 80%;
+}
+#tabla1{
+    text-align: center;
+    margin-top: 20px;
+}
+caption{
+    margin-top: 30px;
+}
+
+td, th{
+    border: 2px solid black;
+    padding:10px 20px;
+    text-align: center;
+}
+th{
+    background-color: aqua;
+    font-size: large;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+td{
+    background-color: beige;
+    font-family: Arial, Helvetica, sans-serif;
+    width: calc(100%/7);
+}
+tr{
+    height: 60px;
+}
+.hora{
+    background-color: cadetblue;
+    font-size: larger;
+}
+.recreo{
+    padding: 5px;
+    background-color: aquamarine;
+    height: 20px;
+}

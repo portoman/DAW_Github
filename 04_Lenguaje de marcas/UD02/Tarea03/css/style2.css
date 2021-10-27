@@ -1,0 +1,49 @@
+*{
+    margin:auto;
+}
+h1{
+    width:30%;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: aqua;
+    border-radius: 10px;
+}
+
+
+
+#tabla1{
+    text-align: center;
+    font-size: large;
+    
+}
+table{
+    margin-top: 30px;
+    border-collapse: collapse;
+    caption-side: bottom;
+    background-image: linear-gradient(to right,coral, white);
+    box-shadow: 8px 8px 8px black;
+}
+
+caption{
+    margin-top: 30px;
+}
+
+td, th{
+    border: 2px solid black;
+    padding:10px 20px;
+    text-align: center;
+}
+th{
+    background-color: greenyellow;
+    color: darkblue;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    letter-spacing: 5px;
+}
+td{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: large;
+}
+caption{
+    font-size: larger;
+}

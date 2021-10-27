@@ -1,0 +1,95 @@
+* {
+    margin: 0px auto;
+  }
+  /*Cabecera*/
+  header {
+    color: white;
+    border: 1px solid black;
+    background-color: cornflowerblue;
+    border-radius: 20px;
+    width: 15%;
+    text-align: center;
+    margin-top: 50px;
+    padding: 10px;
+  }
+
+  /*Imagen de fondo*/
+  body {
+    background-image: url(img/galicia.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+  }
+
+  /*Separador*/
+  .separador {
+    height: 10px;
+    clear: both;
+  }
+
+  /*Seccion*/
+  section {
+    padding-left: 15%;
+  }
+
+  .bloque {
+    float: left;
+    margin: 50px;
+  }
+  img {
+    max-width: 200px;
+    height: 150px;
+    border: 2px solid black;
+    transition: all 10s linear;
+  }
+
+/*Animación de amplicación de imagenes*/
+  figure {
+    transition: all 0.2s linear;
+  }
+
+  figure:hover {
+    transform: scale(1.05);
+  }
+
+  /*Descripción emergente*/
+  figure .textoEmergente {
+    visibility: hidden;
+    width: 120px;
+    background-color:cornflowerblue;
+    border:1px solid black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 10px;
+    position: absolute;
+    bottom: 105%;
+    left: 50%;
+    margin-left: -60px;
+  }
+
+  figure:hover .textoEmergente {
+    visibility: visible;
+  }
+
+  /*Titulo y descripción de fotos*/
+  .descripcion h3 {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #fff;
+    text-align: center;
+  }
+
+  .descripcion h5 {
+    background-color: antiquewhite;
+    text-align: center;
+  }
+
+  /*Pie de página*/
+  footer {
+    text-align: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular';
+    font-size: 30px;
+    background-color: azure;
+    margin-top: 80px;
+  }
