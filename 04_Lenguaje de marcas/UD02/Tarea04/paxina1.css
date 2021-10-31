@@ -1,0 +1,139 @@
+/*Genérico*/
+* {
+  margin: 0px;
+  padding: 0px;
+  text-decoration: none;
+  text-align: center;
+}
+body {
+  background-color: darkgray;
+}
+/*Título*/
+
+h1 {
+  margin-top: 20px;
+  margin-bottom: 40px;
+  background-color: beige;
+  padding: 10px;
+}
+
+/*Formulario*/
+form {
+  width: 25%;
+  margin: 0px auto;
+  background-color: aqua;
+  border: 2px solid black;
+  box-shadow: 1px 1px 2px black;
+}
+
+#cabecera {
+  width: 100%;
+  border-bottom: 1px solid black;
+  padding: 5px 0px;
+  background-color: seashell;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: large;
+  letter-spacing: 2px;
+}
+
+label {
+  float: left;
+  width: 35%;
+  padding-right: 5px;
+  text-align: end;
+  margin-top: 15px;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+
+input {
+  float: left;
+  width: 60%;
+  background-color: cornsilk;
+  margin-top: 10px;
+  height: 25px;
+  text-align: left;
+}
+
+.titulos {
+  text-align: center;
+  font-weight: bold;
+  background-color: black;
+  color: antiquewhite;
+  float: left;
+  width: 50%;
+  font-size: 20px;
+  margin-top: 5px;
+}
+
+/*Maquetación del radio*/
+#radio {
+  width: 50%;
+  float: left;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  padding-bottom: 5px;
+  background-color: aquamarine;
+}
+#radio label {
+  padding-left: 20%;
+}
+#radio input {
+  width: 30%;
+  margin-left: -15px;
+}
+
+/*Maquetación del checkbox*/
+#checkbox {
+  float: left;
+  text-align: left;
+  background-color: beige;
+  width: 49.7%;
+  border-bottom: 1px solid black;
+  padding-bottom: 5px;
+}
+
+#checkbox label {
+  width: 50%;
+  padding-left: 10%;
+}
+#checkbox input {
+  width: 20%;
+}
+
+/*Text area*/
+#comentarios {
+  width: 99.6%;
+  height: 60px;
+  text-align: left;
+}
+
+/*Formato general botones*/
+#reset,
+#enviar {
+  width: 50%;
+  height: 40px;
+  font-size: 20px;
+  text-align: center;
+  margin-top: -5px;
+}
+/*Formato botón enviar*/
+#enviar {
+  background-color: green;
+  margin-left: -4px;
+}
+
+/*Formato botón limpiar*/
+#reset {
+  background-color: orange;
+  margin-left: -0.5px;
+}
+
+/*Pie de página*/
+footer {
+  margin-top: 200px;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  background-color: antiquewhite;
+  font-size: 20px;
+  padding: 20px;
+}
