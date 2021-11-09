@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="apartado1.css" />
+    <title>Apartado 1- Menu de acceso rápido</title>
+  </head>
+
+  <body>
+    <header>
+      <h1>Menu de acceso rápido</h1>
+      <h2>World Wide Web Consortium</h2>
+    </header>
+    <section>
+      <div id="menu">
+        <h3>Índice [<span id="ocultar" onclick="ocultar()">ocultar</span>]</h3>
+        <ul>
+          <li>
+            <a
+              href="https://es.wikipedia.org/wiki/World_Wide_Web_Consortium#Organizaci%C3%B3n_de_la_W3C"
+              target="_blank"
+              ><span class="numero">1</span> Organización de la W3C</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://es.wikipedia.org/wiki/World_Wide_Web_Consortium#Maduraci%C3%B3n_de_especificaciones"
+              target="_blank"
+              ><span class="numero">2</span> Maduración de especificaciones</a
+            >
+            <ul>
+              <li>
+                <a
+                  href="https://es.wikipedia.org/wiki/World_Wide_Web_Consortium#Borrador_de_trabajo_(WD)"
+                  target="_blank"
+                  ><span class="numero">2.1</span> Borrador de trabajo (WD)</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://es.wikipedia.org/wiki/World_Wide_Web_Consortium#Recomendaci%C3%B3n_candidata_(CR)"
+                  target="_blank"
+                  ><span class="numero">2.2</span> Recomendación candidata
+                  (CR)</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://es.wikipedia.org/wiki/World_Wide_Web_Consortium#Recomendaci%C3%B3n_propuesta_(PR)"
+                  target="_blank"
+                  ><span class="numero">2.3</span> Recomendación propuesta
+                  (PR)</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://es.wikipedia.org/wiki/World_Wide_Web_Consortium#Recomendaci%C3%B3n_de_W3C_(REC)"
+                  target="_blank"
+                  ><span class="numero">2.4</span> Recomendación de W3C (REC)</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://es.wikipedia.org/wiki/World_Wide_Web_Consortium#Revisiones_posteriores"
+                  target="_blank"
+                  ><span class="numero">2.5</span> Revisiones posteriores</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://es.wikipedia.org/wiki/World_Wide_Web_Consortium#Certificaci%C3%B3n"
+                  target="_blank"
+                  ><span class="numero">2.6</span> Certificación</a
+                >
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a
+              href="https://es.wikipedia.org/wiki/World_Wide_Web_Consortium#Cr%C3%ADticas"
+              target="_blank"
+              ><span class="numero">3</span> Críticas</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://es.wikipedia.org/wiki/World_Wide_Web_Consortium#Est%C3%A1ndares"
+              target="_blank"
+              ><span class="numero">4</span> Estándares</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://es.wikipedia.org/wiki/World_Wide_Web_Consortium#V%C3%A9ase_tambi%C3%A9n"
+              target="_blank"
+              ><span class="numero">5</span> Véase también</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://es.wikipedia.org/wiki/World_Wide_Web_Consortium#Referencias"
+              target="_blank"
+              ><span class="numero">6</span> Referencias</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://es.wikipedia.org/wiki/World_Wide_Web_Consortium#Enlaces_externos"
+              target="_blank"
+              ><span class="numero">7</span> Enlaces externos</a
+            >
+          </li>
+        </ul>
+      </div>
+    </section>
+    <footer>Apartado 1 - Deseño de páxinas web con HTML - Varios</footer>
+    <script>
+      var menu = document.getElementById("menu");
+      var x = true;
+
+      function ocultar() {
+        if (x) {
+          menu.style.width = "10%";
+          menu.style.height = "40px";
+          menu.style.overflow = "hidden";
+          menu.style.marginBottom = "380px";
+        } else {
+          menu.style.width = "20%";
+          menu.style.height = "380px";
+          menu.style.marginBottom = "40px";
+        }
+        x = !x;
+      }
+    </script>
+  </body>
+</html>

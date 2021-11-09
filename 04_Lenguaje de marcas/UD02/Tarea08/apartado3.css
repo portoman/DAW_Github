@@ -1,0 +1,110 @@
+/*
+Fuentes de texto
+
+font-family: 'Anton', sans-serif;
+font-family: 'Bangers', cursive;
+font-family: 'Meddon', cursive;
+font-family: 'Solway', serif;
+
+*/
+
+*{
+    margin: 0px;
+}
+h1{
+    text-align: center;
+    font-size: 40px;
+    letter-spacing: 5px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: blue;
+    background-color: aqua;
+    width:20%;
+    margin: auto;
+    border-radius: 5px;
+    border: 1px solid blue;
+    padding: 4px;
+    min-width: 350px;
+    margin-bottom: 20px;
+}
+div{
+    text-align: center;
+    display: block;
+    width: 24%;
+    margin: 0.5%;
+    float: left;
+    height: 7vw;
+    border-radius: 20px;
+}
+
+/*Logo 1*/
+#logo1{
+    font-size: 5vw;
+    font-family: 'Anton', sans-serif;
+    text-shadow: 1px 5px 3px black;
+    background-color: aquamarine;
+}
+#a1, #b1{
+color: blueviolet;
+}
+
+#p1{
+    color: brown;
+}
+
+/*Logo 2*/
+
+#logo2{
+    font-size: 5vw;
+    font-family: 'Bangers', cursive;
+    filter:brightness(0.7);
+    background-color: beige;
+    padding-top: 25px;
+    height: 5.7vw;
+}
+#a2{
+    color: blue;
+}
+#p2{
+    color:crimson;
+}
+
+#b2{
+    color: darkgreen;
+}
+
+/*Logo 3*/
+
+#logo3{
+    font-size: 3.7vw;
+    font-family: 'Meddon', cursive;
+    filter: blur(1px);
+    background-color: turquoise;
+}
+
+#a3, #b3{
+    color: orangered;
+}
+#p3{
+    color: cornflowerblue;
+}
+
+/*Logo 4*/
+
+#logo4{
+    font-family: 'Solway', serif;
+    font-size: 4vw;
+    filter: contrast(50%);
+    letter-spacing: 10px;
+    text-shadow: 1px 5px 1px black;
+    background-color: tomato;
+    padding-top: 25px;
+    height: 5.7vw;
+    
+}
+
+#a4, #b4{
+color: forestgreen;
+}
+#p4{
+    color: darkviolet;
+}

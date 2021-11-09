@@ -1,0 +1,54 @@
+/*Propiedades generales*/
+*{
+    font-size: 40px;
+    text-decoration: none;
+    margin: auto;
+}
+
+div{
+    width: 25%;
+    margin: 20px;
+    color: white;
+    height: 150px;
+    text-align: center;
+    line-height: 150px;
+    background-color: black;
+    float: left;
+}
+
+#cajaA{
+    border-bottom-right-radius: 120px;
+}
+#cajaB{
+    border-bottom-right-radius: 160px 40px;
+}
+#cajaC{
+    border-bottom-right-radius: 50px 80px;
+}
+#separador{
+    float: none;
+    clear: both;
+    height: 10px;
+    visibility: hidden;
+}
+
+#cajaD{
+    border-bottom-left-radius: 200px;
+    border-top-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+    border-top-right-radius: 200px;
+    height: 180px;
+}
+
+#cajaE{
+    border-bottom-left-radius: 30px 80px;
+    border-top-left-radius:  80px 30px;
+    border-bottom-right-radius: 80px 30px;
+    border-top-right-radius: 30px 80px;
+}
+
+#cajaF{
+    width:8%;
+    border-radius: 80px;
+    margin-left:10%;
+}

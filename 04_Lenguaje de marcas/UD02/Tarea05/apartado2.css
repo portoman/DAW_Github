@@ -1,0 +1,32 @@
+* {
+  margin: 0px auto;
+  text-align: center;
+}
+
+body {
+  background-image: url(img/conejo-pequeno-1280x720x80xX.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+h1 {
+  color: white;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 50px;
+  background-color: black;
+  width: 400px;
+  margin-top: 40px;
+  margin-bottom: 150px;
+  border-radius: 20px;
+}
+
+video {
+  margin-left: 40%;
+  border-radius: 20px;
+}
+
+footer {
+  background-color: rgba(203, 240, 240, 0.5);
+  margin-top: 280px;
+  padding: 5px;
+}

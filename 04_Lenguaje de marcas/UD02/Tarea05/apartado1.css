@@ -1,0 +1,52 @@
+* {
+  text-decoration: none;
+  list-style: none;
+  margin: 0px auto;
+}
+body {
+  background-color: deepskyblue;
+}
+header {
+  text-align: center;
+}
+h1 {
+  width: 20%;
+  background-color: aqua;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+h2 {
+  color: azure;
+}
+#menu {
+  background-color: rgb(248, 249, 250);
+  border: 1px solid rgb(162, 169, 177);
+  width: 18%;
+  margin-top: 20px;
+  line-height: 25px;
+  height: 380px;
+}
+
+h3 {
+  text-align: center;
+  margin: 5px;
+}
+#ocultar:hover {
+  text-decoration: underline;
+  cursor: pointer;
+  color: blue;
+}
+a:hover {
+  text-decoration: underline;
+}
+.numero {
+  color: black;
+}
+
+footer {
+  text-align: center;
+  font-size: 20px;
+  color: beige;
+  margin-top: 40px;
+}
