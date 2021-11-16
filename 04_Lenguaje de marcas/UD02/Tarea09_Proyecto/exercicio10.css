@@ -1,0 +1,280 @@
+/*
+Fuentes
+
+font-family: 'Grandstander', cursive;
+font-family: 'Oxanium', cursive;
+*/
+
+/*Estructura común*/
+
+body {
+    background-image: url(img/fondo.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+header{
+    margin: 0px 20px 10px 40px; 
+    width:80%; 
+}
+
+#logotipo{
+    letter-spacing: 5px;
+    background-color: azure;
+    width:20%;
+    float:left;
+    text-shadow: 1px 6px 3px black;
+    border-radius: 10px;
+    border: 5px solid black;
+    padding: 10px 8px 0px 15px;
+    text-align: center;
+}
+
+#P,#T{
+    font-family: 'Grandstander', cursive;
+    color: aqua;
+    font-size: 7.5vw;
+}
+
+#R{
+    font-family: 'Oxanium', cursive;  
+    color:blue;
+    font-size: 7vw;
+}
+
+h1{
+    margin: 0px;
+    margin-top: 30px;
+    margin-left: 1%;
+    float: left;
+    width:60%;
+    font-size: 2.5vw;
+    letter-spacing: 2px;
+    text-shadow: 1px 1px 1px black;
+    color:blue;
+    background-color: turquoise;
+    padding:10px;
+    border-radius: 2px;
+    text-align: center;
+    box-shadow: 1px 1px 1px black;
+}
+
+.separador{
+    clear: both;
+    height:1px;
+}
+
+nav{
+    margin-left: 2%;
+    margin-top: 10px;
+}
+.enlaces{
+    width: 10%;
+    margin: 30px;
+    font-size: 40px;
+    text-decoration: none;
+    background-color: aquamarine;
+    box-shadow: 3px 3px 5px black;
+    border-radius: 4px;
+    display:inline-block;
+    text-align: center;
+    transition: all 0.2s linear;
+    min-width: 160px;
+    padding: 5px;
+}
+a{
+    text-decoration: none;
+    padding: 10px;
+    color:darkblue;
+}
+.enlaces:hover{
+    transform: scale(1.1);
+    cursor:pointer;
+}
+
+.enlaces:hover a{
+    color:blue;
+    cursor:pointer;
+}
+
+/*Inicio*/
+
+#inicio_descripcion{
+    background-color: rgb(51,190,255);
+    width: 40%;
+    min-height: 270px;
+    float: left;
+    margin-left: 15%;
+    margin-right: 5%;
+    border-radius: 5px;
+}
+
+#inicio_descripcion h2{
+    text-align: center;
+    font-size: 33px;
+    font-family: sans-serif;
+    margin: 0px;
+    border-bottom: 1px solid black;
+    background-color: blue;
+    color:aliceblue;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding:10px;
+}
+
+#inicio_descripcion p{
+    margin:0px;
+    font-family: sans-serif;
+    padding: 10px;
+    font-size: 20px;
+    text-justify: auto;
+    text-indent: 20px;
+}
+
+#imagen_inicio{
+    width:25%;
+    border:1px solid black;
+    float:left;
+
+}
+
+/*Blog*/
+
+.blog_seccion{
+    margin-left: 3%;
+}
+
+.titulo_seccion{
+    font-size: 33px;
+    font-family: sans-serif;
+    background-color: rgb(51,190,255);
+    padding: 8px;
+    color: blue;
+    width: 35%;
+    text-align: center;
+    border-radius: 5px;
+    border: 1px solid; 
+}
+.contenedor_columnas{
+    width: 50%;
+    display: grid;
+    grid-gap: 50px;
+    grid-template-columns: auto auto;
+    margin-left: 2%;
+}
+
+.contenedor_columnas img{
+    width:400px;
+    border: 2px solid black;
+}
+
+#tabla{
+    visibility: hidden;
+}
+
+table{
+    border-collapse: collapse;
+    box-shadow: 8px 8px 8px black;
+    margin-top: -20px;
+    margin-left: 2%;
+}
+
+
+td, th{
+    border: 1px solid black;
+    padding:15px 20px;
+    text-align: center;
+    background-color:aqua;
+}
+th{
+    background-color: turquoise;
+    color: darkblue;
+    font-size: 25px;
+}
+td{
+    font-size: large;
+}
+
+sup{
+    font-size: 15px;
+}
+
+#blog_iframe{
+    width: 30%;
+    height:350px;
+    border-radius: 10px;
+    margin-left:2%;
+    border: 2px solid black;
+    margin-bottom: 40px;
+}
+
+/*Contacto*/
+#formulario{
+    margin-left: 20%;
+    float: left;
+    width: 40%;
+}
+form{
+    background-color: rgb(51,190,255);
+    width:21%;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 35px 25px 20px 25px;
+    color: white;
+    border-radius: 10px;
+    padding-top: 40px;
+    margin-bottom: 100px;
+    min-width:315px; 
+        
+}
+
+form input{
+    height: 30px;
+    border: none;
+    border-radius: 5px;
+    float: right;
+    width: 60%;
+    margin-bottom: 20px;
+    font-size: 16px;
+    padding-left: 10px;
+    margin-right: 10px;
+}
+#asunto{
+    margin-bottom: 10px;
+}
+textarea{
+    width: 100%;
+    height:150px;
+    margin-top: 10px;
+    border-style: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+button{
+    width: 100%;
+    height: 50px;
+    font-size: 20px;
+    margin-top: 40px;
+    background: black;
+    color: white;
+    border-radius: 5px;
+   cursor:pointer;
+}
+
+#localizacion{
+    float: left;
+}
+footer{
+    background-color: white;
+    opacity: 0.5;
+    text-align: center;
+    font-size: 25px;
+    height:30px;
+    padding-top: 10px;
+    bottom: 0px;
+    position: fixed;
+    width:100%;
+}

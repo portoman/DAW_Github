@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <title>Ejercicio 9- Sitio Web Completo</title>
+    <meta charset="UTF-8" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Grandstander:wght@300&family=Oxanium&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="exercicio10.css" />
+  </head>
+  <body>
+    <header>
+      <div id="logotipo">
+        <span id="P">P</span>
+        <span id="R">R</span>
+        <span id="T">T</span>
+      </div>
+      <h1>Carpintería metálica - Hnos Porto</h1>
+    </header>
+    <div class="separador"></div>
+    <nav>
+      <div class="enlaces"><a href="index.html">Inicio</a></div>
+      <div class="enlaces"><a href="blog.html">Blog</a></div>
+      <div class="enlaces"><a href="contacto.html">Contacto</a></div>
+    </nav>
+    <section class="blog_seccion">
+      <h2 class="titulo_seccion">Ejemplos de productos instalados</h2>
+      <div class="contenedor_columnas">
+        <img
+          src="img/imagen1_blog.jpg"
+          title="Imagen 1 blog"
+          alt="Imagen 1 blog"
+          longdesc="longdesc/imagen1_blog.html"
+        />
+        <img
+          src="img/imagen2_blog.jpg"
+          title="Imagen 2 blog"
+          alt="Imagen 2 blog"
+          longdesc="longdesc/imagen2_blog.html"
+        />
+      </div>
+    </section>
+    <section class="blog_seccion">
+      <h2 class="titulo_seccion">Productos estándar</h2>
+      <p id="tabla" aria-hidden="true">
+        En esta tabla se incluyen los principales productos estándar con sus
+        dimensiones y precios
+      </p>
+      <table aria-describedby="tabla">
+        <thead>
+          <tr>
+            <th scope="col">Producto</th>
+            <th scope="col">Dimensiones (mm<sup>2</sup>)</th>
+            <th scope="col">Precio (€)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Ventana estándar</td>
+            <td>750 x 660</td>
+            <td>125</td>
+          </tr>
+          <tr>
+            <td>Ventana pequeña</td>
+            <td>400 x 550</td>
+            <td>99,5</td>
+          </tr>
+          <tr>
+            <td>Ventana grande</td>
+            <td>1050 x 800</td>
+            <td>185</td>
+          </tr>
+          <tr>
+            <td>Mosquitera</td>
+            <td>1050 x 660</td>
+            <td>105</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="blog_seccion">
+      <h2 class="titulo_seccion">Video ejemplo fabricación</h2>
+      <iframe
+        id="blog_iframe"
+        src="https://www.youtube.com/embed/pYF2vVB3lIw"
+        title="Video ejemplo fabricación"
+        frameborder="0"
+        allowfullscreen
+      ></iframe>
+    </section>
+    <div class="separador"></div>
+    <footer>Página Web | Hnos Porto &copy</footer>
+  </body>
+</html>
