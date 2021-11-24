@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+		<title>Noticias de Coruña</title>
+		<link href="https://portobujia.github.io/"/>
+		 <updated>2021-11-23T18:35:02Z</updated>
+		<id>https://portobujia.github.io/</id>
+		<author>
+			<name>Jesús Alfonso Porto Bujía</name>
+		</author>
+		<entry>
+			<title>El tiempo</title>
+			<id>https://www.tiempo.es/a_coruna-a_coruna-es0lc0031.html</id>
+			<updated>2021-11-23T18:30:02Z</updated>
+			<link rel="alternate" href="https://www.tiempo.es/a_coruna-a_coruna-es0lc0031.html"/>
+			<summary>El tiempo en Coruña</summary>
+		</entry>
+		<entry>
+			<title>Noticia 1</title>
+			<id>https://portobujia.github.io/noticia1.html</id>
+			<updated>2021-11-23T17:30:02Z</updated>
+			<link rel="alternate" href="https://portobujia.github.io/noticia1.html"/>
+			<summary>Cortes de tráfico para desmontar la pasarela de la ronda de Outeiro</summary>	
+		</entry>	
+		
+</feed>

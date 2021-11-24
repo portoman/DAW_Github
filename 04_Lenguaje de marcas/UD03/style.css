@@ -1,0 +1,179 @@
+body{
+    background-image: url(img/fondo.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+header{
+    width: 100%;
+    margin-top: 20px;
+}
+
+h1{
+    background-color: aquamarine;
+    width: 30%;
+    float: left;
+    text-align: center;
+    font-size: 3vw;
+    color: darkblue;
+    border-radius: 5px;
+    border: 1px solid;
+    box-shadow: 1px 2px 2px black;
+    margin:5%;
+    margin-left: 20%;
+}
+
+
+#foto_torre{
+    width: 20%;
+    float: left;
+    margin-top: 21px;
+    border-radius: 5px;
+    border: 1px solid black;
+}
+#rss{
+    width: 5%;
+    margin-left:1%;
+    margin-top: 85px;
+    float: left;
+    transition:all 0.5s;
+}
+
+#atom{
+    width: 5.5%;
+    float: left;
+    margin-top: 80px;
+    margin-left: 1%;
+    transition:all 0.5s;
+}
+
+#rss:hover,#atom:hover{
+    transform: scale(1.2);
+}
+#separador{
+    clear:both;
+    float:none;
+    height: 2px;
+}
+
+nav{
+    margin-top: 20px;
+    margin-left: 20%;
+}
+
+nav a{ 
+    padding: 8px;
+    background: aquamarine;
+    font-size: 2vw;
+    margin: 1%;
+    border-radius: 5px;
+    border: 1px solid;
+    text-decoration: none;
+    color: black;
+    transition: all 0.3s;
+
+}
+
+nav a:hover{
+    transform: scale(1.1);
+    color:blue;
+    background: azure;
+}
+#novedades{
+    float:left;
+    width:60%;
+    margin:2%;
+    background-color: activecaption;
+    border: 1px solid black;
+    box-shadow: 1px 1px black;
+    border-radius: 4px;
+}
+
+h2{
+    color: beige;
+    text-align: center;
+    font-size: 2vw;
+    letter-spacing: 2px;
+    background-color: darkblue;
+    margin: 0px;
+    padding: 9px 0px;
+}
+.articulo{
+    padding:0px 30px;
+    border-top:  1px solid black;
+
+}
+.articulo h3{
+    color: blue;
+    margin: 0px;
+    margin: 16px 0px 5px 0px;
+    
+}
+.articulo a{
+  text-decoration: none;
+}
+
+.articulo h3:hover{
+    color: white;
+}
+
+.articulo p{
+    margin-top:0px;
+
+}
+
+#informacion{
+    float:left;
+    width:20%;
+    margin:2%;
+    background-color: activecaption;
+    border: 1px solid black;
+    box-shadow: 1px 1px black;
+    border-radius: 4px;
+}
+
+#informacion h3{
+    text-align: center;
+    background-color:darkgrey;
+    margin:0px;
+    padding: 9px 0px;
+    border-bottom: 1px solid black;
+}
+
+#informacion p{
+    padding: 5px 15px;
+
+}
+/*Noticia1*/
+#novedades_noticias{
+    float:left;
+    width:30%;
+    margin:2%;
+    background-color: activecaption;
+    border: 1px solid black;
+    box-shadow: 1px 1px black;
+    border-radius: 4px;
+}
+#noticia{
+    padding: 10px;
+}
+#noticia h3{
+    color:blue;
+}
+#foto_pasarela{
+    float:left;
+    width: 30%;
+    margin-top: 35px;
+    border:1px solid black;
+}
+footer{
+    text-align: center;
+    background-color: grey;
+    opacity: 0.7;
+    bottom: 0px;
+    position: fixed;
+    width:100%;
+    height: 25px;
+    font-size:20px;
+}

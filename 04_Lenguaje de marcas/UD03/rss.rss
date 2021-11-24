@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" >
+	<channel>
+		<title>Noticias de Coruña</title>
+		<link>https://portobujia.github.io/</link>
+		<description>Noticias de la ciudad de Coruña, donde se tratan sucesos, noticias nacionales e internacionales, deportes y tecnologías</description>
+		<item>
+			<title>El tiempo</title>
+			<link>https://www.tiempo.es/a_coruna-a_coruna-es0lc0031.html</link>
+			<description>El tiempo en Coruña</description>
+			<guid>https://www.tiempo.es/a_coruna-a_coruna-es0lc0031.html</guid>
+		</item>
+		<item>
+			<title>Noticia 1</title>
+			<link>https://portobujia.github.io/noticia1.html</link>
+			<description>Cortes de tráfico para desmontar la pasarela de la ronda de Outeiro </description>
+			<guid>https://portobujia.github.io/noticia1.html</guid>
+		</item>
+	</channel>
+</rss>
