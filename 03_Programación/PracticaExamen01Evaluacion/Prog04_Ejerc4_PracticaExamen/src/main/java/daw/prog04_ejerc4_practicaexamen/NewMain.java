@@ -31,8 +31,10 @@ public class NewMain {
 
                     case 2:
                         int numOculto = (int) Math.floor(Math.random() * numMax + 1);
-
-                        for (int i = 1; i <= numInt; i++) {
+                        int i=0;
+                        while(i<numInt){
+                             i++;
+//                        for ( i = 1; i <= numInt; i++) {
                             System.out.println("Adivina el número oculto: ");
                             int numInsert = teclado.nextInt();
                             if(numInt==i){
@@ -46,7 +48,7 @@ public class NewMain {
                                 System.out.println("El número oculto es menor");
                             } else if(numOculto > numInsert){
                                 System.out.println("El número oculto es mayor");
-                            }                       
+                            } 
                         
                         }                        
                     case 3: break;
