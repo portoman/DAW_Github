@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!ELEMENT familia (((padre|madre)?,(padre|madre)?, hijos))>
+<!ATTLIST familia codigo CDATA #REQUIRED>
+<!ELEMENT padre (nombre, apellido,apellido, dni?, edad?)>
+<!ELEMENT madre (nombre, apellido,apellido, dni?, edad?)>
+<!ELEMENT hijos (hijo | hija)+>
+<!ELEMENT hijo (nombre, apellido,apellido, dni?, edad?)>
+<!ELEMENT hija (nombre, apellido,apellido, dni?, edad?)>
+<!ATTLIST hijo pos CDATA #REQUIRED>
+<!ATTLIST hija pos CDATA #REQUIRED>
+
+<!ELEMENT nombre (#PCDATA)>
+<!ELEMENT apellido (#PCDATA)>
+<!ELEMENT dni (#PCDATA)>
+<!ELEMENT edad (#PCDATA)>
