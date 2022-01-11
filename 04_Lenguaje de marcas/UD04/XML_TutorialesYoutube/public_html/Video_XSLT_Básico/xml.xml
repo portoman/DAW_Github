@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="xsl.xsl"?>
+
+<biblioteca>
+    <libro>
+        <titulo>La vida está en otra parte</titulo>
+        <autor>Pepito Lopez</autor>
+        <fechaPublicacion año="1973"/>
+    </libro>
+    <libro>
+        <titulo>Pantaleón y las visitadoras</titulo>
+        <autor fechaNacimiento="28/03/1977">Emilio Prado</autor>
+        <fechaPublicacion año="1983"/>
+    </libro>
+    <libro>
+        <titulo>Conversación en la catedral</titulo>
+        <autor fechaNacimiento="28/03/1977">Emilio Prado</autor>
+        <fechaPublicacion año="1993"/>
+    </libro>
+</biblioteca>

@@ -172,7 +172,7 @@ public class PrimeraVentana extends javax.swing.JFrame {
     }//GEN-LAST:event_RestarActionPerformed
 
     private void SalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirActionPerformed
-        // TODO add your handling code here:
+        System.exit(0);
         ;
     }//GEN-LAST:event_SalirActionPerformed
 

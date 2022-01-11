@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="xsl2.xsl"?>
+<ies nombre="IES Rodolfo Ucha" web="http://www.rodolfoucha.com>">
+    <ciclos>
+        <ciclo id="ASIR">
+            <nombre>Administración de Sistemas Informáticos en Red</nombre>
+            <grado>Superior</grado>
+            <decretoTitulo año="2009"/>
+        </ciclo>
+        <ciclo id="DAW">
+            <nombre>Desarrollo de Aplicaciones Web</nombre>
+            <grado>Superior</grado>
+            <decretoTitulo año="2010"/>
+        </ciclo>
+        <ciclo id="ASIR">
+            <nombre>Desarrollo de Aplicaciones Multiplataforma</nombre>
+            <grado>Superior</grado>
+            <decretoTitulo año="2010"/>
+        </ciclo>
+    </ciclos>
+</ies>
