@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE alumno  SYSTEM "alumno.dtd">
+<alumno>
+    <nombre>Alfonso</nombre>
+    <direccion>Ramon de la Sagra</direccion>
+</alumno>

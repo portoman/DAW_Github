@@ -22,6 +22,7 @@ public class NewMain {
         
         System.out.println(dni1.obtenerDNI());
         
+        
     }
     
 }
