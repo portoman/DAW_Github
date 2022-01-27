@@ -68,14 +68,14 @@
     
     <!--Abajo una manera más compleja de hacer lo de arriba-->
     <!--
-    <xs:complexType name="datos_hijos">
-        <xs:complexContent>
-            <xs:extension base="datos_padre"/>
-            <xs:attribute ref="pos" use="required"/>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
--->
+        <xs:complexType name="datos_hijos">
+            <xs:complexContent>
+                <xs:extension base="datos_padre"/>
+                <xs:attribute ref="pos" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    -->
     <!--Elemento complejo: Hijos-->
     <xs:element name="hijos">
         <xs:complexType>
