@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!ELEMENT empresa (sedeCentral,almacen,sucursal+,pedido+)>
+<!ATTLIST empresa nombre CDATA #REQUIRED>
+
+<!ELEMENT sedeCentral EMPTY>
+<!ATTLIST sedeCentral localizacion CDATA #REQUIRED>
+
+<!ELEMENT almacen EMPTY>
+<!ATTLIST almacen localizacion CDATA #IMPLIED>
+
+<!ELEMENT sucursal (zonaExposicion,zonaXestion)>
+
+<!ELEMENT zonaExposicion EMPTY>
+<!ATTLIST zonaExposicion localización CDATA #IMPLIED>
+
+<!ELEMENT zonaXestion EMPTY>
+<!ATTLIST zonaXestion localización CDATA #IMPLIED>
+
+<!ELEMENT pedido (albara,pagamento,sucursalRemitente,enderezoEnvio?,codigoPedido,nomeTraballadorRemitente,data,obsservacions?,prazoDias,prezoFinal,artigos+)>
+
+<!ELEMENT albara EMPTY>
+<!ATTLIST albara lugarRecepcion CDATA #IMPLIED>
+
+<!ELEMENT pagamento EMPTY>
+<!ATTLIST pagamento lugarRecepcion CDATA #IMPLIED>
+
+<!ELEMENT sucursalRemitente (localizacion,rua,numero,cp)>
+<!ELEMENT localizacion (#PCDATA)>
+<!ELEMENT rua (#PCDATA)>
+<!ELEMENT numero (#PCDATA)>
+<!ELEMENT cp (#PCDATA)>
+
+<!ELEMENT enderezoEnvio (localizacion,rua,numero,cp)>
+
+<!ELEMENT codigoPedido (#PCDATA)>
+<!ELEMENT nomeTraballadorRemitente (#PCDATA)>
+<!ELEMENT data (#PCDATA)>
+<!ELEMENT obsservacions (#PCDATA)>
+<!ELEMENT prazoDias (#PCDATA)>
+<!ATTLIST prazoDias tipoPrazo IDREF #REQUIRED >
+<!ELEMENT prezoFinal (#PCDATA)>
+<!ATTLIST prezoFinal tipoPrezo ID #REQUIRED >
+
+<!ELEMENT artigos (artigo)+>
+<!ATTLIST artigos lugarRecepcion CDATA #REQUIRED >
+<!ELEMENT artigo (codigoArtigo,numUnidades,prezoUnidade,observacions)>
+<!ELEMENT codigoArtigo (#PCDATA)>
+<!ELEMENT numUnidades (#PCDATA)>
+<!ELEMENT prezoUnidade (#PCDATA)>
+<!ELEMENT observacions (#PCDATA)>

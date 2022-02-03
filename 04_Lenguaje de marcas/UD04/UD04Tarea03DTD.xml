@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE empresa SYSTEM "UD04Tarea03.dtd">
+
+<empresa nombre="Distanza SA">
+    <sedeCentral localizacion="Madrid"/>
+    <almacen localizacion="Madrid"/>
+    <sucursal>
+        <zonaExposicion localización="Ferrol"/>
+        <zonaXestion localización="Ferrol"/>
+    </sucursal>
+    <sucursal>
+        <zonaExposicion localización="Coruña"/>
+        <zonaXestion localización="Arteixo"/>
+    </sucursal>
+    <sucursal>
+        <zonaExposicion localización="Ourense"/>
+        <zonaXestion localización="Santiago"/>
+    </sucursal>
+    <pedido>
+        <albara lugarRecepcion="Departamento de xestión"></albara>
+        <pagamento lugarRecepcion="Departamento de xestión"></pagamento>
+        <sucursalRemitente>
+            <localizacion>Santiago</localizacion>
+            <rua>Ramon Cabanillas</rua>
+            <numero>9</numero>
+            <cp>15701</cp>
+        </sucursalRemitente>
+        <enderezoEnvio><!-- Se enderezoEnvio e sucursalRemitente coinciden, so aparecerá sucursalRemitente, polo que declaro enderezoEnvio como opcional-->
+            <localizacion>Ourense</localizacion>
+            <rua>Av. de Portugal</rua>
+            <numero>3</numero>
+            <cp>32002</cp>
+        </enderezoEnvio>
+        <codigoPedido>A1234567</codigoPedido>
+        <nomeTraballadorRemitente>Francisco García Muradas</nomeTraballadorRemitente>
+        <data>03/02/2022</data>
+        <obsservacions>urxente</obsservacions><!-- Elemento opcional que so pode valer urxente ou incompleto-->
+        <prazoDias tipoPrazo="estandar">1</prazoDias><!-- Elemento que depende do prezo final-->
+        <prezoFinal tipoPrezo="estandar">14.85</prezoFinal>
+        <artigos lugarRecepcion="Departamento de exposición">
+            <artigo>
+                <codigoArtigo>A-B-C-1-2-3</codigoArtigo>
+                <numUnidades>5</numUnidades>
+                <prezoUnidade>1.25</prezoUnidade>
+                <observacions>5 unidades de grapadoras</observacions>
+            </artigo>
+            <artigo>
+                <codigoArtigo>Q-C-F-8-5-2</codigoArtigo>
+                <numUnidades>4</numUnidades>
+                <prezoUnidade>2.15</prezoUnidade>
+                <observacions>4 lámparas de escritorio</observacions>
+            </artigo>
+        </artigos>
+    </pedido>
+    <pedido>
+        <albara lugarRecepcion="Departamento de xestión"></albara>
+        <pagamento lugarRecepcion="Departamento de xestión"></pagamento>
+        <sucursalRemitente>
+            <localizacion>Ferrol</localizacion>
+            <rua>Galiano</rua>
+            <numero>10</numero>
+            <cp>15402</cp>
+        </sucursalRemitente>
+        <codigoPedido>Z9876543</codigoPedido>
+        <nomeTraballadorRemitente>Lourdes Rodriguez Pérez</nomeTraballadorRemitente>
+        <data>01/02/2022</data>
+        <prazoDias tipoPrazo="premium">5</prazoDias><!-- Elemento que depende do prezo final-->
+        <prezoFinal tipoPrezo="premium">44.85</prezoFinal>
+        <artigos lugarRecepcion="Departamento de exposición">
+            <artigo>
+                <codigoArtigo>P-E-O-3-5-0</codigoArtigo>
+                <numUnidades>3</numUnidades>
+                <prezoUnidade>14.95</prezoUnidade>
+                <observacions>3 sillas de oficina</observacions>
+            </artigo>
+        </artigos>
+    </pedido>
+</empresa>
