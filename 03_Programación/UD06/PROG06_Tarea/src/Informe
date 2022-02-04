@@ -1,0 +1,20 @@
+
+Informe:
+El programa se compone del paquete prog06_tarea donde están las clases: Principal, Vehículo y Concesionario, y del paquete prog06_tarea_util 
+donde está la clase Validar
+
+En la clase Principal es donde inicialmente se despliega el menú con las respectivas opciones. El código está dentro de un bucle while donde 
+hasta que no se pulse la opción 6 (Salir) no se cierra. Dentro de este se encuentra un bloque try-catch para gestionar las diferentes excepciones.
+Para poder escoger las distintas opciones usé una estructura switch con las 6 opciones(he incluido también la opción de eliminar) y dentro de estas
+están las llamadas a diferentes métodos de la clase Concesionario, dependiendo de la opción elegida.
+
+La clase Vehiculo es reutilizada de la tarea anterior, donde he creado 2 métodos similares a toString ya que la devolución es diferente
+según se haga "Buscar" o Listar",desde los métodos de la clase Concesionario.
+
+La clase Concesionario está formada por 2 atributos: El array vehiculos, que es donde se almacenan los mismos y el atributo posición, que es requerido
+por el enunciado para determinar la posición en el array. También se incluyen los diferentes métodos que requiere el enunciado y que se llamarán desde
+la clase Principal, incluyendo un método para eliminar vehículos. De estos métodos solo el que lista los vehículos está vacio, 
+mostrando datos por pantalla, el resto de métodos devuelven un valor.
+
+Por último en la clase Validar, se incluyen los métodos estáticos necesarios para realizar las distintas validaciones y las expresiones regulares.
+  
