@@ -1,0 +1,59 @@
+<html>
+    <head>
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>UD05_Tarefa02.xsl</title>
+        <style>
+                    table{
+                    border-collapse: collapse;
+                    }
+                    th,td{
+                    border: 1px solid black;
+                    padding:5px;
+                    text-align:center;
+                    width:150px;
+                    }
+                    th{
+                    background-color:rgb(153,204,255);
+                    }
+                    .titulos{
+                    background-color:rgb(0,71,255);
+                    color:white;
+                    }
+                    .fondoClaro{
+                    background-color:rgb(255,255,153);
+                    }
+                    .fondoNaranja{
+                    background-color:rgb(255,211,32);
+                    font-weight: bold;
+                    }
+                </style>
+    </head>
+    <body>
+        <table aria-describedby="tabla">
+            <tr>
+                <th scope="col" colspan="2">Datos</th><th scope="col" colspan="4">Notas</th>
+            </tr>
+            <tr>
+                <td class="titulos">Nome</td><td class="titulos">Apelidos</td><td class="titulos">Tarefas</td><td class="titulos">Cuestionarios</td><td class="titulos">Exame</td><td class="titulos">Final</td>
+            </tr>
+            <tr>
+                <td>Jose</td><td>Mu&ntilde;oz Soto</td><td class="fondoClaro">9.0</td><td class="fondoClaro">7.0</td><td class="fondoClaro">7.0</td><td class="fondoNaranja">
+                                        NOTABLE
+                                    </td>
+            </tr>
+            <tr>
+                <td>Ana</td><td>Martinez de la Fuente</td><td class="fondoClaro">9.0</td><td class="fondoClaro">8.0</td><td class="fondoClaro">9.0</td><td class="fondoNaranja">
+                                        NOTABLE
+                                    </td>
+            </tr>
+            <tr>
+                <td>Esther</td><td>Pereda</td><td class="fondoClaro">3.0</td><td class="fondoClaro">2.0</td><td class="fondoClaro">2.0</td><td class="fondoNaranja">
+                                        INSUFICIENTE
+                                    </td>
+            </tr>
+        </table>
+        <p id="tabla" aria-hidden="true">
+                    Tabla de la Tarea02 de la UD05
+                </p>
+    </body>
+</html>

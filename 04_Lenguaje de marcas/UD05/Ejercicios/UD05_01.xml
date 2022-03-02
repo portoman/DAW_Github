@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<inventario>
+    <producto codigo="P1">
+        <precio unidad="Euro">500</precio>
+        <nombre>Switch</nombre>
+        <lugar edificio="A">
+            <aula>10</aula>
+        </lugar>
+    </producto>
+    <producto codigo="P2">
+        <precio unidad="Euro">1000</precio>
+        <nombre>Ordenador</nombre>
+        <lugar edificio="B">
+            <aula>10</aula>
+        </lugar>
+    </producto>
+    <producto codigo="P3">
+        <precio unidad="Euro">1000</precio>
+        <nombre>Ordenador</nombre>
+        <lugar edificio="B">
+            <aula>10</aula>
+        </lugar>
+    </producto>
+    <producto codigo="P4">
+        <precio unidad="Euro">1000</precio>
+        <nombre>Ordenador</nombre>
+        <lugar edificio="B">
+            <aula>10</aula>
+        </lugar>
+    </producto>
+    <producto codigo="P5">
+        <precio unidad="Euro">1000</precio>
+        <nombre>Ordenador</nombre>
+        <lugar edificio="B">
+            <aula>10</aula>
+        </lugar>
+    </producto>
+    <producto codigo="P6">
+        <precio unidad="Euro">500</precio>
+        <nombre>Switch</nombre>
+        <lugar edificio="A">
+            <aula>10</aula>
+        </lugar>
+    </producto>
+    <producto codigo="P7">
+        <precio unidad="Euro">1000</precio>
+        <nombre>Ordenador</nombre>
+        <lugar edificio="B">
+            <aula>10</aula>
+        </lugar>
+    </producto>
+    <producto codigo="P8">
+        <precio unidad="Euro">1000</precio>
+        <nombre>Ordenador</nombre>
+        <lugar edificio="B">
+            <aula>15</aula>
+        </lugar>
+    </producto>
+</inventario>
