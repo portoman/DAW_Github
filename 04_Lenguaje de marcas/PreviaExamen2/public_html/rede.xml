@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Red xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="rede_enunciado.xsd">
+	<Fecha>01/01/2021</Fecha>
+	<Maquina Nombre="Breogan">
+		<Info>
+			<Tipo>Ordenador de sobremesa</Tipo>
+			<Fabricante>HP</Fabricante>
+			<Procesador Marca="Intel" Velocidad="2.4">Core i9</Procesador>
+			<Memoria>16</Memoria>
+			<Disco Tecnologia="SSD" Capacidad="500"/>
+			<Grabadora Tipo="DVD"/>
+		</Info>
+		<Config>
+			<OS>Windows 10</OS>
+			<IP>192.168.25.30</IP>
+			<Gateway>192.168.25.1</Gateway>
+		</Config>
+		<Notas>Con tarjeta Wifi</Notas>
+	</Maquina>
+	<Maquina Nombre="Roi">
+		<Info>
+			<Tipo>Ordenador de sobremesa</Tipo>
+			<Fabricante>Dell</Fabricante>
+			<Procesador Marca="Intel" Velocidad="3">Core i5</Procesador>
+			<Memoria>12</Memoria>
+			<Disco Tecnologia="SCSI" Capacidad="500"/>
+			<Disco Tecnologia="SCSI" Capacidad="500"/>
+			<Disco Tecnologia="SCSI" Capacidad="500"/>
+		</Info>
+		<Config>
+			<Role>Servidor de Active Directory</Role>
+			<OS>Windows 2018 Server R2</OS>
+			<IP>192.168.25.54</IP>
+			<Gateway>192.168.25.1</Gateway>
+		</Config>
+	</Maquina>
+	<Maquina Nombre="Uxia">
+		<Info>
+			<Tipo>Portátil</Tipo>
+			<Memoria>8</Memoria>
+			<Disco Capacidad="256"/>
+		</Info>
+		<Config>
+			<OS>Windows 7 SP1</OS>
+		</Config>
+		<Notas>Conexión por DHCP</Notas>
+	</Maquina>
+	<Maquina Nombre="Lambre">
+		<Info>
+			<Tipo>Minipc</Tipo>
+			<Disco Capacidad="500"/>
+		</Info>
+		<Config>
+			<OS>Windows 10</OS>
+		</Config>
+		<Notas>Con tarjeta Wifi</Notas>
+	</Maquina>
+	<Maquina Nombre="IMP001">
+		<Info>
+			<Tipo>Impresora Inyección</Tipo>
+			<Fabricante>Lexmark</Fabricante>
+		</Info>
+		<Config>
+			<IP>192.168.25.111</IP>
+		</Config>
+	</Maquina>
+	<Maquina Nombre="Sar">
+		<Info>
+			<Tipo>Ordenador de sobremesa</Tipo>
+			<Memoria>4</Memoria>
+			<Disco Capacidad="500"/>
+		</Info>
+		<Config>
+			<OS>Windows 7 SP1</OS>
+			<IP>192.168.25.65</IP>
+			<Gateway>192.168.25.1</Gateway>
+		</Config>
+	</Maquina>
+	<Maquina Nombre="Sarela">
+		<Info>
+			<Tipo>Ordenador de sobremesa</Tipo>
+			<Procesador Marca="AMD" Velocidad="1.4">AMD</Procesador>
+			<Memoria>8</Memoria>
+			<Disco Capacidad="256"/>
+			<Grabadora Tipo="DVD"/>
+		</Info>
+		<Config>
+			<OS>Mandriva 2007</OS>
+			<IP>192.168.10.45</IP>
+			<Gateway>192.168.10.1</Gateway>
+		</Config>
+	</Maquina>
+	<Maquina Nombre="Verdugo">
+		<Info>
+			<Tipo>Ordenador de sobremesa</Tipo>
+			<Fabricante>Dell</Fabricante>
+			<Procesador Marca="Intel" Velocidad="3">AMD</Procesador>
+			<Memoria>2</Memoria>
+			<Disco Tecnologia="SCSI" Capacidad="500"/>
+			<Disco Tecnologia="SCSI" Capacidad="500"/>
+			<Grabadora Tipo="CD"/>
+		</Info>
+		<Config>
+			<Role>Servidor LDAP</Role>
+			<OS>Windows 2018 Server R2</OS>
+			<IP>192.168.25.11</IP>
+			<Gateway>192.168.25.1</Gateway>
+		</Config>
+	</Maquina>
+	<Maquina Nombre="Belelle">
+		<Info>
+			<Tipo>Servidor</Tipo>
+			<Fabricante>HP</Fabricante>
+			<Procesador Marca="Intel" Velocidad="3">Core i7</Procesador>
+			<Memoria>4</Memoria>
+			<Disco Tecnologia="SATA" Capacidad="2000"/>
+			<Disco Tecnologia="SATA" Capacidad="2000"/>
+			<Disco Tecnologia="SATA" Capacidad="2000"/>
+		</Info>
+		<Config>
+			<Role>Servidor de archivos</Role>
+			<OS>Ubuntu 18.04 Server</OS>
+			<IP>192.168.25.61</IP>
+			<IP>192.168.25.62</IP>
+			<Gateway>192.168.25.1</Gateway>
+		</Config>
+	</Maquina>
+	<Maquina Nombre="Cadavo">
+		<Info>
+			<Tipo>Servidor</Tipo>
+			<Fabricante>HP</Fabricante>
+			<Procesador Marca="Intel" Velocidad="3">Core i7</Procesador>
+			<Memoria>4</Memoria>
+			<Disco Tecnologia="SSD" Capacidad="500"/>
+			<Disco Tecnologia="SATA" Capacidad="500"/>
+		</Info>
+		<Config>
+			<Role>Servidor web</Role>
+			<OS>Ubuntu 18.04 Server</OS>
+			<IP>192.168.25.74</IP>
+			<IP>192.168.25.75</IP>
+			<Gateway>192.168.25.1</Gateway>
+		</Config>
+	</Maquina>
+</Red>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    
+    <xs:element name="Red">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Fecha" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="Maquina" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+ 
+    <!--FECHA-->
+    <xs:element name="Fecha" type="xs:string"/>
+ 
+    <!--MAQUINA-->
+    <xs:element name="Maquina">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Info" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="Config" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="Notas" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attribute name="Nombre" type="codNombre"/>
+        </xs:complexType>
+    </xs:element>
+  
+    <xs:simpleType name="codNombre">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="10"/>
+            <xs:pattern value="[A-Za-z]{0,10}|[A-Za-z]{0,7}[0-9]{0,3}"/>
+        </xs:restriction>
+    </xs:simpleType>
+  
+    <xs:element name="Info">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Tipo" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="Fabricante" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="Procesador" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="Memoria" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="Disco" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="Grabadora" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="Procesador">
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:string">
+                    <xs:attribute name="Marca" type="xs:string"/>
+                    <xs:attribute name="Velocidad" type="xs:string"/>
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+  
+    <xs:element name="Disco">
+        <xs:complexType>
+            <xs:attribute name="Tecnologia" type="tipoTecnologia"/>
+            <xs:attribute name="Capacidad" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:simpleType name="tipoTecnologia">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="SSD"/>
+            <xs:enumeration value="SATA"/>
+            <xs:enumeration value="SCSI"/>
+        </xs:restriction>
+    </xs:simpleType>
+  
+    <xs:group name="GrupoTiposSoportes">
+        <xs:choice>
+            <xs:element ref="Lectora"/>
+            <xs:element ref="Grabadora"/>
+        </xs:choice>
+    </xs:group>
+  
+    <!--CD/DVD--> 
+    <xs:element name="Lectora">
+        <xs:complexType>
+            <xs:attribute name="Tipo" type="Lect_Grab" />
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="Grabadora">
+         <xs:complexType>
+            <xs:attribute name="Tipo" type="Lect_Grab" />
+        </xs:complexType>
+    </xs:element>
+  
+    <xs:simpleType name="Lect_Grab">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="CD"/>
+            <xs:enumeration value="DVD"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <!--FIN CD/DVD--> 
+  
+    <!--CONFIG--> 
+    <xs:element name="Config">
+        <xs:complexType>
+            <xs:sequence>
+                 <xs:element name="Role" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="OS" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="IP" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="Gateway" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <!--NOTAS--> 
+ <xs:element name="Notas" type="xs:string"/>
+  
+</xs:schema>

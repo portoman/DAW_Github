@@ -1,0 +1,49 @@
+<!ELEMENT Red (Fecha|Maquina)*>
+
+<!ELEMENT Fecha (#PCDATA)>
+
+<!ELEMENT Maquina (Info|Config|Notas)*>
+<!ATTLIST Maquina
+    Nombre CDATA #IMPLIED
+  >
+
+<!ELEMENT Info (Tipo*,Fabricante*,Procesador*,Memoria*,Disco*,(Grabadora|Lectora)?)>
+
+<!ELEMENT Tipo (#PCDATA)>
+
+<!ELEMENT Fabricante (#PCDATA)>
+
+<!ELEMENT Procesador (#PCDATA)>
+<!ATTLIST Procesador
+    Marca CDATA #IMPLIED
+    Velocidad CDATA #IMPLIED
+  >
+
+<!ELEMENT Memoria (#PCDATA)>
+
+<!ELEMENT Disco EMPTY>
+<!ATTLIST Disco
+    Tecnologia (SSD|SATA|SCSI) #IMPLIED
+    Capacidad CDATA #IMPLIED
+  >
+
+<!ELEMENT Grabadora EMPTY>
+<!ATTLIST Grabadora
+    Tipo (CD|DVD) #IMPLIED
+  >
+<!ELEMENT Lectora EMPTY>
+<!ATTLIST Lectora
+    Tipo (CD|DVD) #IMPLIED
+  >
+
+<!ELEMENT Config (OS|IP|Gateway|Role)*>
+
+<!ELEMENT OS (#PCDATA)>
+
+<!ELEMENT IP (#PCDATA)>
+
+<!ELEMENT Gateway (#PCDATA)>
+
+<!ELEMENT Notas (#PCDATA)>
+
+<!ELEMENT Role (#PCDATA)>

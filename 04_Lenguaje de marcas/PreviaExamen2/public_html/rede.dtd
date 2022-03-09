@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!ELEMENT Red (Fecha|Maquina)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT Fecha (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT Maquina (Info|Config|Notas)*>
+<!ATTLIST Maquina
+    Nombre CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT Info (Tipo|Fabricante|Procesador|Memoria|Disco|Grabadora)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT Tipo (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT Fabricante (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT Procesador (#PCDATA)>
+<!ATTLIST Procesador
+    Marca CDATA #IMPLIED
+    Velocidad CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT Memoria (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT Disco EMPTY>
+<!ATTLIST Disco
+    Tecnologia CDATA #IMPLIED
+    Capacidad CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT Grabadora EMPTY>
+<!ATTLIST Grabadora
+    Tipo CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT Config (OS|IP|Gateway|Role)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT OS (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT IP (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT Gateway (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT Notas (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT Role (#PCDATA)>
