@@ -144,7 +144,7 @@ BEGIN
 END $$
 DELIMITER ;
 
-CALL artistas_getListMasAnimalesCuida(3);
+CALL artistas_getListMasAnimalesCuida(1);
 
 #Ejercicio 5: Crea un procedimiento de nombre atracciones_getListPorFecha que devuelva los datos de las atracciones que han comenzado a partir de la fecha indicada.
 #Pista: Recordar que las fechas son tratadas como cadenas...y tener en cuenta el formato.
@@ -158,14 +158,39 @@ BEGIN
 END $$
 DELIMITER ;
 
-CALL atracciones_getListPorFecha(3);
+CALL atracciones_getListPorFecha('2022-04-01');
 
 
 #Ejercicio 6
 #Crea un procedimiento de nombre artistas_getNumAnimalesCuida al que se le pase el nif de un artista y que devuelva en forma de parámetro de salida a cuantos animales cuida.
 
+DROP PROCEDURE IF EXISTS artistas_getNumAnimalesCuida;
+DELIMITER $$
+CREATE PROCEDURE artistas_getNumAnimalesCuida (IN p_nif_artista char(9),OUT p_num_animales INTEGER)
+BEGIN
+    SELECT COUNT(*) INTO p_num_animales FROM animales_artistas GROUP BY nif_artista HAVING nif_artista=p_nif_artista;
+END $$
+DELIMITER ;
+
+CALL artistas_getNumAnimalesCuida('22222222B',@num);
+
+SELECT @num;
+
 #Ejercicio 7
 #Crea un procedimiento de nombre pistas_addAforo al que se le envíe como parámetros el nombre de la pista y una cantidad que representa el incremento del aforo.
 #El procedimiento debe devolver en el mismo parámetro el nuevo aforo de la pista.
+
+DROP PROCEDURE IF EXISTS pistas_addAforo;
+DELIMITER $$
+CREATE PROCEDURE pistas_addAforo (IN p_nombre_pista VARCHAR(50),INOUT p_incremento_aforo SMALLINT)
+BEGIN
+    SELECT aforo+p_incremento_aforo INTO p_incremento_aforo FROM pistas WHERE nombre=p_nombre_pista;
+END $$
+DELIMITER ;
+
+SET @dato=50;
+CALL pistas_addAforo('LATERAL1',@dato);
+
+SELECT @dato;
 
 
