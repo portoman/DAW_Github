@@ -1,0 +1,28 @@
+Informe:
+El programa se divide en 2 paquetes: prog07_tarea y prog07_tarea_util. El prog07_tarea contiene las clases Banco, NewJFrame, Persona, Principal, la interfaz Imprimible y 
+a la vez otro paquete llamado cuentas  que contiene todas las clases requeridas de cuentas: CuentaBancaria, CuentaCorriente, CuentaAhorro, CuentaCorrienteEmpresa y
+CuentaCorrienteEmpresa. El prog07_tarea_util contiene la clase Validar.
+
+He optado por la opción de realizar la tarea a través de una interfaz que se refleja en la clase NewJFrame. En ella diseñé un menú, con diferentes submenús 
+para realizar las funcionalidades requeridas por el enunciado: Abrir una nueva cuenta, ver un listado de las cuentas disponibles, obtener los datos de una cuenta concreta, 
+realizar un ingreso, retirar efectivo, consultar el saldo y salir de la aplicación. También incluí diversos métodos para validar todos los campos introducidos lanzando 
+mensajes informativos o de error a través de la clase JOptionPane y un constructor que pide como parámetro un atributo banco.
+
+La clase Principal simplemente instancia un objeto banco e inicializa el JFrame a través del constructor, pasándole como parámetro el banco instanciado.
+
+La interfaz Imprimible solo declara el método devolverInfoString, como requiere el resultado y se implementa en la clase Persona y CuentaBancaria. Este método servirá para
+mostrar la información por pantalla y estará presente en todas las clases referentes a las cuentas de manera sobreescrita, donde por el concepto de polimorfismo y ligadura dinámica, 
+el tipo de cuenta instanciada determinará el tipo de método devolverInfoString que se usará.
+
+La clase Persona contiene la información sobre los datos personales básicos del cliente y la clase Banco contiene un ArrayList que almacena las cuentas y diferentes 
+métodos para realizar operaciones de abrir, listar, consultar, ingresar, retirar dinero en las cuentas y un método para eliminar una cuenta de acuerdo con el enunciado 
+de la unidad 8.
+ 
+Dentro del paquete de cuentas, la clase CuentaBancaria tiene una composición, ya que se incluye la clase Persona en ella y será la clase padre de las diferentes 
+cuentas bancarias. La clase CuentaAhorro es una subclase que hereda de la clase CuentaBancaria que tiene como atributo propio el tipoInteres. La clase CuentaCorriente es
+una subclase que hereda de la clase CuentaBancaria, que tiene como atributo propio el listaEntidades y a la vez es padre de CuentaCorrientePersonal y CuentaCorrienteEmpresa.
+La clase CuentaCorrientePersonal tiene como atributo propio comisionMantenimiento y la CuentaCorrienteEmpresa tiene como atributos propios tipoInteresDescubierto, 
+maximoDescubiertoPermitido y comisionFija.
+
+
+Por último en el paquete prog07_tarea_util se encuentra la clase Validar donde se incluyen los métodos estáticos para validar el formato DNI e IBAN a través de expresiones regulares.
