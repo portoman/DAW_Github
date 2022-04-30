@@ -367,10 +367,13 @@ FROM animales;
 
 
 ############## CONTROL DE FLUJO ################
-#Crear un procedimiento de nombre artistas_getPorNif que recupere los datos de un artista enviando un nif. 
-#En caso de que el artista no exista, devolverá la cadena 'NO ENCONTRADO' sin utilizar un parámetro de salida. 
-#La cadena que va a devolver tendrá el formato: artista>nif:nombre:apellidos-jefe>nif:nombre:apellidos. 
-#En caso de que no tenga jefe, el formato será: artista>nif:nombre:apellidos-jefe>SIN JEFE
+
+# Ejemplo Teoría 1
+
+# Crear un procedimiento de nombre artistas_getPorNif que recupere los datos de un artista enviando un nif. 
+# En caso de que el artista no exista, devolverá la cadena 'NO ENCONTRADO' sin utilizar un parámetro de salida. 
+# La cadena que va a devolver tendrá el formato: artista>nif:nombre:apellidos-jefe>nif:nombre:apellidos. 
+# En caso de que no tenga jefe, el formato será: artista>nif:nombre:apellidos-jefe>SIN JEFE
 
 
 DROP PROCEDURE IF EXISTS artistas_getPorNif;
@@ -384,24 +387,67 @@ BEGIN
     DECLARE v_cadenaArtista varchar(400);
     DECLARE v_cadenaJefe varchar(400);
     
+    # Consulta reflexiva
     SELECT A.nif,A.nombre,A.apellidos,J.nif,J.nombre,J.apellidos
     INTO v_nifArt,v_nombreArt,v_apellArt,v_nifJefe,v_nombreJefe,v_apellJefe
     FROM ARTISTAS A LEFT OUTER JOIN ARTISTAS J 
 				ON (A.nif_jefe = J.nif)
     WHERE A.nif=p_nif;
     
-    if (v_nifArt IS NULL) THEN		-- No hay un artista con ese NIF
+    #Si no hay artista con ese nif
+    IF (v_nifArt IS NULL) THEN		
         SELECT 'NO ENCONTRADO';
-    ELSE
-   	SET v_cadenaArtista=CONCAT('artista>',v_nifArt,':',v_nombreArt,':',v_apellArt,'-jefe>');
-        SET v_cadenaJefe = IFNULL(CONCAT(v_nifJefe,':',v_nombreJefe,':',v_apellJefe),'SIN JEFE');
-        SELECT CONCAT(v_cadenaArtista,v_cadenaJefe);
+	#Si no tiene jefe
+    ELSEIF (v_nifJefe IS NULL) THEN
+		SELECT CONCAT('artista>',v_nifArt,':',v_nombreArt,':',v_apellArt,'>  SIN JEFE');
+	#Resto de casos
+   	ELSE
+		SELECT CONCAT('artista>',v_nifArt,':',v_nombreArt,':',v_apellArt,'-jefe>',v_nifJefe,':',v_nombreJefe,':',v_apellJefe);
     END IF;
 END$$
 
 CALL artistas_getPorNif('11111111A');	-- Artista con jefe
 CALL artistas_getPorNif('22222222B');	-- Artista sin jefe
 CALL artistas_getPorNif('22222222X');  -- No existe Artista
+
+# Ejemplo Teoría 2
+
+# Crea un procedimiento de nombre utilidades_getDia al que se le pase como parámetro un número entre 1 y 7 y devuelva, en forma de parámetro de salida, Lunes, Martes, Miércoles,....
+# En caso de que el número esté fuera de rango debe devolver la cadena null.
+
+USE CIRCO;
+DROP PROCEDURE IF EXISTS utilidades_getDia;
+DELIMITER $$
+CREATE PROCEDURE utilidades_getDia(p_numDia tinyint, OUT p_nombreDia varchar(9))		
+BEGIN
+		CASE p_numDia
+			WHEN 1 THEN 
+				SET p_nombreDia = 'LUNES';
+			WHEN 2 THEN 
+				SET p_nombreDia = 'MARTES';
+			WHEN 3 THEN 
+				SET p_nombreDia = 'MIERCOLES';
+			WHEN 4 THEN 
+				SET p_nombreDia = 'JUEVES';
+			WHEN 5 THEN 
+				SET p_nombreDia = 'VIERNES';
+			WHEN 6 THEN 
+				SET p_nombreDia = 'SABADO';
+			WHEN 7 THEN 
+				SET p_nombreDia = 'DOMINGO';
+            ELSE
+				SET p_nombreDia = null;
+        END CASE;
+END$$
+DELIMITER ;
+
+CALL utilidades_getDia(3,@nombreDia);    -- Devuelve MIERCOLES
+SELECT @nombreDia;
+
+CALL utilidades_getDia(20,@nombreDia);   -- Devuelve NULL
+SELECT @nombreDia;
+
+#### EJERCICIOS IF/ELSE #######
 
 
 #1 Crea un procedimiento de nombre pistas_getListAnimales que devuelva los animales (nombre, peso y anhos) que trabajen en la pista indicada. 
@@ -507,6 +553,221 @@ SELECT @NIF_CUIDADOR;
 CALL animales_updateCuidador('Princesa3',@NIF_CUIDADOR);
 SELECT @NIF_CUIDADOR;
 
+
+
+######### INSTRUCCIONES REPETITIVAS ##########
+
+# Ejemplo teoria 1 #### REPEAT
+
+# Crear un procedimiento de nombre utilidades_getSumEntreNumeros que sume los números entre un rango 
+# indicado por dos parámetros de entrada (incluidos ambos) y devuelva la suma en un parámetro de salida.
+# En el caso de que el primer parámetro tenga un valor superior al segundo, se debe devolver -1 y mostrar la cadena EL PRIMER NUMERO TIENE QUE SER INFERIOR AL SEGUNDO.
+
+DROP PROCEDURE IF EXISTS utilidades_getSumEntreNumeros;
+DELIMITER $$
+CREATE PROCEDURE utilidades_getSumEntreNumeros(p_primerNumero int,p_segundoNumero int, out p_suma int)
+BEGIN
+	#Iniciamos a cero el parametro de salida, ya que inicialmente es null
+	SET p_suma=0;
+	IF(p_primerNumero>p_segundoNumero) THEN
+		SET p_suma=-1;
+		SELECT "EL PRIMER NUMERO TIENE QUE SER INFERIOR AL SEGUNDO";
+	ELSE
+			#Similar a un while
+			REPEAT
+				SET p_suma = p_suma + p_primerNumero;
+				SET p_primerNumero = p_primerNumero + 1;
+			UNTIL p_primerNumero > p_segundoNumero
+			END REPEAT;
+	END IF;
+END $$
+DELIMITER ;
+
+CALL utilidades_getSumEntreNumeros(3,50,@suma);
+SELECT @suma;
+
+CALL utilidades_getSumEntreNumeros(60,1,@suma);		-- Mostrará el mensaje de error
+SELECT @suma;
+
+
+# Ejemplo teoria 2 #### REPEAT
+
+# Crear un procedimiento de nombre utilidades_getSumEntreNumerosPares que sume los números pares entre un rango indicado por dos parámetros 
+# de entrada (incluidos ambos) y devuelva la suma en un parámetro de salida. En caso de que la suma sea superior a 120000 debe devolver 120000 y salir del bucle.
+# Deberás considerar el caso de que se envíen los números un cualquier orden.
+# Para obtener el resto de dividir por 2 y saber si es par puedes hacer uso del operador % o MOD.
+
+DROP PROCEDURE IF EXISTS utilidades_getSumEntreNumerosPares;
+DELIMITER $$
+CREATE PROCEDURE utilidades_getSumEntreNumerosPares(IN p_primerNumero int,IN p_segundoNumero int, out p_suma int)
+BEGIN
+
+#Iniciamos a cero el parametro de salida, ya que inicialmente es null
+SET p_suma=0;
+
+#Si el primer número es menor que el segundo
+IF(p_primerNumero<p_segundoNumero) THEN
+	#Similar a un while
+		label_repeat: REPEAT
+				#Si es par se suma
+				IF(p_primerNumero % 2 = 0) THEN
+					SET p_suma = p_suma + p_primerNumero;
+				END IF;
+                #Se va incrementando el valor del menor número siempre
+            SET p_primerNumero = p_primerNumero + 1;
+				#Si la suma es mayor que 1200, será 12000 y se sale del bucle
+				IF (p_suma>120000) THEN
+					SET p_suma = 120000;
+					LEAVE label_repeat;
+				END IF;
+			#El bucle gira hasta que el primer número sea mayor que el segundo
+		UNTIL p_primerNumero > p_segundoNumero
+		END REPEAT;
+#Si el segundo número es menor que el primero, lo mismo que arriba pero tomando al número menor al segundo
+ELSE
+		label_repeat: REPEAT
+				IF(p_segundoNumero % 2 = 0) THEN
+					SET p_suma = p_suma + p_segundoNumero;
+				END IF;
+            SET p_segundoNumero = p_segundoNumero + 1;
+				IF (p_suma>120000) THEN
+					SET p_suma = 120000;
+					LEAVE label_repeat;
+				END IF;
+		UNTIL p_segundoNumero > p_primerNumero
+		END REPEAT;
+	
+END IF;
+END $$
+DELIMITER ;
+
+CALL utilidades_getSumEntreNumerosPares(8,13000,@suma);  -- Se pasa. Da 120.000
+SELECT @suma;
+
+CALL utilidades_getSumEntreNumerosPares(8,12,@suma);  -- Da 8+10+12=30
+SELECT @suma;
+
+CALL utilidades_getSumEntreNumerosPares(12,8,@suma); 
+SELECT @suma;
+
+# Ejemplo teoria 3 ######## WHILE 
+
+# Crea un procedimiento de nombre atracciones_getNumPorMes al que se le pase dos datos: un mes en letra (ENERO, FEBRERO,....) y un año en número. 
+# Tendrá que calcular la suma de todas las atracciones celebradas en el mes y año indicado y devolver el dato en un parámetro de salida. En el caso de que el año indicado sea null, tomar el año actual.
+# Crea un bucle que recorra todos los días del mes del año indicado y vaya sumando las atracciones.
+# Si el mes no existe debe devolver -1 en el parámetro de salida.
+# Para 'construír' la fecha emplear la función CONCAT. Debéis de tener en cuenta que hay meses en los que no hay 31 días. En vez de establecer condiciones por meses, 
+# emplear la función DATE (ya vista antes) para comprobar si la fecha es válida.
+
+USE CIRCO;
+DROP PROCEDURE IF EXISTS atracciones_getNumPorMes;
+DELIMITER $$
+CREATE PROCEDURE atracciones_getNumPorMes(p_mes varchar(10),p_ano smallint, OUT p_numAtracciones int)		
+label_proc: BEGIN
+    DECLARE v_mesEnNumero tinyint default 0;
+    DECLARE v_dia tinyint default 1;	-- Día del mes. Usado para hacer el bucle hasta el día 31
+    DECLARE v_numAtraccPorDia int;
+
+	#Iniciamos a cero el parametro de salida, ya que inicialmente es null
+    SET p_numAtracciones = 0;		
+    
+    CASE p_mes
+        WHEN 'ENERO' THEN SET v_mesEnNumero = 1;
+        WHEN 'FEBRERO' THEN	SET v_mesEnNumero = 2;
+        WHEN 'MARZO' THEN SET v_mesEnNumero = 3;
+        WHEN 'ABRIL' THEN SET v_mesEnNumero = 4;
+        WHEN 'MAYO' THEN SET v_mesEnNumero = 5;
+        WHEN 'JUNIO' THEN SET v_mesEnNumero = 6;
+        WHEN 'JULIO' THEN SET v_mesEnNumero = 7;
+        WHEN 'AGOSTO' THEN SET v_mesEnNumero = 8;
+        WHEN 'SEPTIEMBRE' THEN SET v_mesEnNumero = 9;
+        WHEN 'OCTUBRE' THEN SET v_mesEnNumero = 10;
+        WHEN 'NOVIEMBRE' THEN SET v_mesEnNumero = 11;
+        WHEN 'DICIEMBRE' THEN SET v_mesEnNumero = 12;
+        ELSE 
+			# Si el mes no existe debe devolver -1 en el parámetro de salida y sale del procedimiento.
+            SET p_numAtracciones = -1;
+            LEAVE label_proc;       
+    END CASE;
+    
+    # Si el año es null se toma el actual.
+    IF (p_ano IS NULL) THEN
+        SET p_ano = YEAR(curdate());
+    END IF;
+    
+    bucle_dia: WHILE (v_dia <= 31) DO
+		#Los dias se van incrementando desde 1. En el momento que la fecha no sea válida, se sale del while
+        IF (DATE(CONCAT(p_ano,'-',v_mesEnNumero,'-',v_dia)) IS NULL) THEN 
+            LEAVE bucle_dia;
+        END IF;
+        
+        #Consulta que cuenta las atracciones que hay en un día y las mete en la variable v_numAtraccPorDia
+        SELECT COUNT(*)
+        INTO v_numAtraccPorDia
+        FROM ATRACCION_DIA
+        WHERE fecha = CONCAT(p_ano,'-',v_mesEnNumero,'-',v_dia);
+        
+        #Sumatorio que va incrementando el día
+        SET v_dia = v_dia+1;
+        #Sumatorio que va incrementando el parámetro de salida
+        SET p_numAtracciones = p_numAtracciones + v_numAtraccPorDia;
+    END WHILE bucle_dia;
+
+END $$
+DELIMITER ;
+
+CALL atracciones_getNumPorMes('ABRIL',2000,@numAtracciones);   -- Devuelve 2.  Podéis añadir nuevas entradas a la tabla para comprobar el funcionamiento.
+SELECT @numAtracciones;
+
+CALL atracciones_getNumPorMes('NO EXISTE',2000,@numAtracciones);   -- Devuelve -1. 
+SELECT @numAtracciones;
+
+CALL atracciones_getNumPorMes('ABRIL',NULL,@numAtracciones);   -- Buscar en el año actual
+SELECT @numAtracciones;
+            
+
+# Ejemplo teoria 3 ######## LOOP 
+
+# Crea un procedimiento de nombre utilidades_cambiarFormato al que se le pase un dato en forma de cadena y devuelva en el mismo parámetro 
+# la cadena enviada cambiando las letras por números y separados por un guion.
+# Para pasar de letra a número emplea la función ORD.
+# Para recorrer la cadena carácter a carácter puedes hacer uso de las funciones LEFT y RIGHT o de la función SUBSTRING (más fácil) además de la función CHAR_LENGTH.
+
+USE CIRCO;
+DROP PROCEDURE IF EXISTS utilidades_cambiarFormato;
+DELIMITER $$
+CREATE PROCEDURE utilidades_cambiarFormato(INOUT p_cadena varchar(1000))		
+BEGIN
+    DECLARE v_indice smallint default 1;   -- Empleado para recorrer la cadena caracter a caracter
+    DECLARE v_caracter char(1);            -- Guarda el caracter de la cadena
+    
+    # Variable local que será la cadena a devolver. Debemos poner un default para poder concatenar
+    DECLARE v_cadena varchar(1000) default '';        
+    
+    bucle_loop: LOOP
+		# Coge caracter a caracter
+        SET v_caracter = SUBSTRING(p_cadena,v_indice,1);
+        # Concatena y convierte a número cada caracter
+        SET v_cadena = CONCAT(v_cadena,ORD(v_caracter),'-');	
+
+        SET v_indice = v_indice+1;
+        # Cuando el v_indice sea mayor que la longitud de la cadena, sale del bucle
+        IF (v_indice > CHAR_LENGTH(p_cadena)) THEN   
+            LEAVE bucle_loop;
+        END IF;
+    END LOOP bucle_loop;
+    
+    # Al finalizar el bucle, le damos el valor de v_cadena al parámetro de salida
+    SET p_cadena = v_cadena;
+
+END $$
+DELIMITER ;
+
+SET @dato = 'ANGEL';
+CALL utilidades_cambiarFormato(@dato);
+SELECT @dato;
+
+
 # Ejercicios propuestos instrucciones repetitivas
 
 #Ejercicio 1
@@ -526,42 +787,47 @@ label_getSumAforo: BEGIN
     DECLARE v_aforo smallint;   
     DECLARE v_nombrePista varchar(50);	
 
-    SET p_sumaAforo = 0;		-- Por defecto vale null. Como vamos ir acumulando el aforo en esta variable no podemos sumar un valor null. Por eso le damos un valor inicial
+	#Inicializamos el parámetro de salida
+    SET p_sumaAforo = 0;		
     
+    # Si la longitud es cero, se devuelve -1 y se sale del bucle
     IF (CHAR_LENGTH(p_pistas)=0) THEN
         SET p_sumaAforo = -1;
         LEAVE label_getSumAforo;
     END IF;
     
-    WHILE (v_pos != 0) DO   -- La función LOCATE devuelve 0 si no encuentra la cadena a buscar (la coma que separa cada pista).
+    WHILE (v_pos != 0) DO 
+    # La función LOCATE devuelve 0 si no encuentra la ',' en p_pistas, desde v_index
         SELECT LOCATE(',',p_pistas,v_index)
         INTO v_pos;
-        IF (v_pos != 0) THEN	-- Encuentra una coma
+        
+        # Si encuentra una coma, la posición es distinta de 0
+        IF (v_pos != 0) THEN
+			# Consulta que selecciona una palabra desde primera ',' a la siguiente 
             SELECT SUBSTRING(p_pistas,v_index,v_pos-v_index)
             INTO v_nombrePista;
             
             set v_index = v_pos+1;
-        ELSE    -- Falta la última pista con contar ya que no lleva coma al final
+        ELSE    -- Bucle final que hara cuando no encuentre ',' que será la última pista
             SELECT SUBSTRING(p_pistas,v_index)
             INTO v_nombrePista;
         END IF;
         
-        SET v_aforo = null; -- Para comprobar si la pista existe, podríamos hacer un count(*) buscando por la pista
--- Pero de esta forma nos ahorramos una consulta. Si la pista no existe el valor de la variable seguirá valiendo NULL
--- En SQL Server podemos hacer uso de la variable @@ROWCOUNT
+        SET v_aforo = null; #Si la pista no existe el valor de la variable seguirá valiendo NULL
+
         SELECT aforo
         INTO v_aforo
         FROM PISTAS
         WHERE nombre = v_nombrePista;
         
-        IF (v_aforo IS NULL) THEN 	-- Pista no encontrada
+        #Si el aforo es null, es que la pista no existe
+        IF (v_aforo IS NULL) THEN 	
             SELECT CONCAT('La pista ',v_nombrePista,' no existe');
         ELSE
+        # Si el aforo es distinto de null, se va incluyendo en un sumatorio
             SET p_sumaAforo = p_sumaAforo + v_aforo;
         END IF;
-        
     END WHILE;
-    
 END $$
 DELIMITER ;
 
@@ -590,7 +856,6 @@ USE CIRCO;
 DROP PROCEDURE IF EXISTS atracciones_getGananciasSupuestas;
 DELIMITER $$
 CREATE PROCEDURE atracciones_getGananciasSupuestas (p_nombreAtraccion varchar(50),p_precioInferior tinyint, p_precioSuperior tinyint)		
-    COMMENT 'Muestra los días en los que se celebró la atracción junto con su número de espectadores y ganancia así como las ganancias que tendríamos si la entrada costara diferentes precios'
 label_getGananciasSupuestas: BEGIN
     DECLARE v_precio tinyint default 0;
     DECLARE v_atraccionExiste tinyint;	-- Para comprobar si la atraccion existe
@@ -617,7 +882,7 @@ label_getGananciasSupuestas: BEGIN
         SELECT 'El precio inferior no puede ser superior al segundo número';
         LEAVE label_getGananciasSupuestas;
     END IF;
-    IF ((p_precioInferior % 5)<>0 OR (p_precioSuperior%5)<>0) THEN
+    IF ((p_precioInferior % 5)!=0 OR (p_precioSuperior%5)!=0) THEN
         SELECT 'Los dos números deben ser múltiplos de 5';
         LEAVE label_getGananciasSupuestas;
     END IF;
@@ -634,6 +899,52 @@ label_getGananciasSupuestas: BEGIN
 END $$
 DELIMITER ;
 
+CALL atracciones_getGananciasSupuestas('El orangután',12,20);  -- Muestra mensaje de error ya que los precios no son múltiplos de 5
+CALL atracciones_getGananciasSupuestas('El orangután',10,20);  -- Muestra mensaje de error ya que esa atracción no se ha celebrado nunca.
+CALL atracciones_getGananciasSupuestas('El gran felino',10,20);  -- Muestra tres pestañas cada una con todas las celebraciones y ganancias simuladas
+
+
+# Ejercicio 3
+# Crea un procedimiento de nombre utilidades_getNumImpares al que se le pasen tres números y devuelva en forma de parámetro de salida cuanto números 
+# hay entre los dos primeros números que son divisibles por el tercero. Se deben incluir los dos primeros números a la hora de contar.
+
+DROP PROCEDURE IF EXISTS utilidades_getNumImpares;
+DELIMITER $$
+CREATE PROCEDURE utilidades_getNumImpares (p_numero1 int, p_numero2 int,p_multiplo int, OUT p_numMultiplos int)		
+    COMMENT 'Muestra cuanto números múltiplos por el tercer número hay entre los dos primeros (incluidos los dos números enviados)'
+BEGIN
+    DECLARE v_temporal int default 0;
+    
+    IF (p_numero1 > p_numero2) THEN		-- Intercambiamos los números si el segundo es inferior al primero
+        SET v_temporal = p_numero2;
+        SET p_numero2 = p_numero1;
+        SET p_numero1 = v_temporal;
+    END IF;
+    
+    SET p_numMultiplos = 0;
+    
+    etiqueta_bucle: LOOP	-- Probamos con LOOP. Valdría WHILE o REPEAT
+		# Si es multipo del multiplo, se incrementa el número de mútiplos
+        IF (p_numero1%p_multiplo=0) THEN 
+            SET p_numMultiplos = p_numMultiplos + 1;
+        END IF;
+        SET p_numero1 = p_numero1 + 1;
+        # Cuando el primer número es mayor que el segundo, se sale del bucle
+        IF (p_numero1 > p_numero2) THEN
+            LEAVE etiqueta_bucle;
+        END IF;
+    END LOOP;
+END $$
+DELIMITER ;
+
+CALL utilidades_getNumImpares(5,1,3,@numMultiplos);-- Busca múltiplos de 3
+SELECT @numMultiplos;
+
+CALL utilidades_getNumImpares(25,2,2,@numMultiplos);   -- Busca múltiplos de 2
+SELECT @numMultiplos;
+
+
+############ TRIGGERS ###############
 
 
 
