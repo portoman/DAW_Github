@@ -947,4 +947,367 @@ SELECT @numMultiplos;
 ############ TRIGGERS ###############
 
 
+#Ejercicio 1
+# Haz que no se pueda añadir un nuevo animal si el tipo es 'León' y el número de años es mayor que 20. # En caso de no cumplirse la condición lanzará una excepción.
+# Los Triggers serán necesarios cuando hagamos operaciones SQL directamente sobre las tablas y no dispongamos de un check que nos cubra la condición que queramos tener.
+# Solución: EL proceso para crear un trigger  es:
+  #  • Identificar la tabla sobre la que vamos a crear el trigger => ANIMALES
+  #  • Identificar la operación sobre la que se va a crear el trigger => INSERT
+  #  • Identificar si queremos que el trigger se ejecuta antes o después: Queremos que el trigger se ejecute antes que la inserción de la fila => BEFORE
+# Para acceder a los datos que estamos queriendo añadir, debemos de hacer uso de la tabla NEW.
 
+ USE CIRCO;
+ DROP TRIGGER IF EXISTS animales_checkAdd_INSERT;
+ DELIMITER $$
+ CREATE TRIGGER animales_checkAdd_INSERT BEFORE INSERT ON ANIMALES FOR EACH ROW
+ BEGIN
+ 	IF (NEW.tipo='León' AND NEW.anhos>20) THEN
+ 		SIGNAL SQLSTATE '45000' SET message_text='El tipo león no puede tener más de 20 años';
+     END IF;
+ END $$
+ DELIMITER ;
+
+INSERT INTO `CIRCO`.`ANIMALES` (`nombre`,`tipo`,`anhos`,`peso`,`estatura`,`nombre_atraccion`,`nombre_pista`)
+ VALUES ('El comehombres','León',25,120,1.2,'El gran felino','LATERAL1');
+
+SHOW triggers;
+
+
+# Ejercicio 2
+# Cuando se añada un nuevo animal, hacer que dicho animal esté cuidado por el artista que cuida a menos animales.
+# Solución: EL proceso para crear un trigger como comenté antes es:
+#    • Identificar la tabla sobre la que vamos a crear el trigger => ANIMALES
+#    • Identificar la operación sobre la que se va a crear el trigger => INSERT
+#    • Identificar si queremos que el trigger se ejecuta antes o después: Queremos añadir una nueva fila a la tabla ANIMALES_ARTISTAS. 
+# Por lo tanto, el animal tiene que estar ya añadido a la tabla para poder realizar la operación => AFTER
+# Para acceder a los datos que estamos queriendo añadir, debemos de hacer uso de la tabla NEW.
+
+USE CIRCO;
+ DROP TRIGGER IF EXISTS animales_AddArtista_INSERT;
+ DELIMITER $$
+ CREATE TRIGGER animales_AddArtista_INSERT AFTER INSERT ON ANIMALES FOR EACH ROW
+ BEGIN
+ 	
+    DECLARE v_temporal INT DEFAULT 0;
+    DECLARE v_artistaMenosAnimales CHAR(9);
+    
+    #Buscamos el artista con menos animales
+    SELECT COUNT(*), nif_artista
+    INTO v_temporal, v_artistaMenosAnimales
+    FROM animales_artistas
+     GROUP BY nif_artista ORDER BY 1 ASC LIMIT 1;
+     
+     
+     INSERT INTO ANIMALES_ARTISTAS (nombre_animal,nif_artista)
+     VALUES (NEW.nombre, v_artistaMenosAnimales);
+    
+ END $$
+ DELIMITER ;
+ 
+INSERT INTO `CIRCO`.`ANIMALES` (`nombre`,`tipo`,`anhos`,`peso`,`estatura`,`nombre_atraccion`,`nombre_pista`)
+ VALUES ('El comehombres','León',2,120,1.2,'El gran felino','LATERAL1');
+
+
+# Ejercicio 3
+# Haz todo lo necesario para que el campo ganancias de la tabla ATRACCIONES se actualice cuando se añadan, borren o modifiquen datos en la tabla ATRACCION_DIA.
+# Solución: EL proceso para crear un trigger como comenté antes es:
+#    • Identificar la tabla sobre la que vamos a crear el trigger => ATRACCIONES
+#    • Identificar la operación sobre la que se va a crear el trigger => INSERT, UPDATE, DELETE
+#    • Identificar si queremos que el trigger se ejecuta antes o después: Queremos actualizar el campo ganancias una vez se ha actualizado la fila ATRACCION_DIA por lo tanto el trigger tiene que ser AFTER.
+# Para acceder a los datos que estamos queriendo AÑADIR, debemos de hacer uso de la tabla NEW.
+# Para acceder a los datos que estamos queriendo BORRAR, debemos de hacer uso de la tabla OLD.
+# Para acceder a los datos que estamos queriendo MODIFICAR, debemos de hacer uso de la tabla OLD para acceder a los viejos y NEW para acceder a los nuevos.
+
+USE CIRCO;
+  DROP TRIGGER IF EXISTS atracciones_actualizarGananciasTotales_INSERT;
+  DELIMITER $$
+  # Trigger para cuando se inserta
+  CREATE TRIGGER atracciones_actualizarGananciasTotales_INSERT AFTER INSERT ON ATRACCION_DIA FOR EACH ROW
+  BEGIN
+      DECLARE v_fecha date;
+      
+      # Consulta para actualizar la fecha, aunque el enunciado no lo pide
+	SELECT IFNULL(fecha_inicio,CURDATE()) 
+     INTO v_fecha
+     FROM ATRACCIONES
+     WHERE nombre = NEW.nombre_atraccion;
+     
+     # Actualiza el campo ganancias de atracciones, sumándole las nuevas ganancias  (También mete la fecha actual)  
+     UPDATE ATRACCIONES
+     SET ganancias = IFNULL(ganancias,0) + NEW.ganancias,
+         fecha_inicio = v_fecha
+     WHERE nombre = NEW.nombre_atraccion;
+ END $$
+ DELIMITER ;
+
+ INSERT INTO `CIRCO`.`ATRACCION_DIA` (`nombre_atraccion`, `fecha`, `num_espectadores`, `ganancias`) VALUES ('El orangután', '2020-03-23', '500', '50000.00');
+INSERT INTO `CIRCO`.`ATRACCION_DIA` (`nombre_atraccion`, `fecha`, `num_espectadores`, `ganancias`) VALUES ('El orangután', '2020-03-05', '100', '10000.00');
+
+
+USE CIRCO;
+  # Trigger cuando se actualiza
+  DROP TRIGGER IF EXISTS atracciones_actualizarGananciasTotales_UPDATE;
+  DELIMITER $$
+  CREATE TRIGGER atracciones_actualizarGananciasTotales_UPDATE AFTER UPDATE ON ATRACCION_DIA FOR EACH ROW
+  BEGIN
+      UPDATE ATRACCIONES
+      # Ganancias= Total + nueva cifra - cifra antigua
+      SET ganancias = ganancias + NEW.ganancias - OLD.ganancias
+      WHERE nombre = OLD.nombre_atraccion;
+ END $$
+ DELIMITER ;
+
+ UPDATE `CIRCO`.`ATRACCION_DIA` SET `ganancias` = '35000.00' WHERE (`nombre_atraccion` = 'El orangután') and (`fecha` = '2020-03-02');
+
+USE CIRCO;
+  # Trigger cuando se borra
+  DROP TRIGGER IF EXISTS atracciones_actualizarGananciasTotales_DELETE;
+  DELIMITER $$
+  CREATE TRIGGER atracciones_actualizarGananciasTotales_DELETE AFTER DELETE ON ATRACCION_DIA FOR EACH ROW
+  BEGIN
+      UPDATE ATRACCIONES
+      SET ganancias = ganancias - OLD.ganancias
+      WHERE nombre = OLD.nombre_atraccion;
+ END $$
+ DELIMITER ;
+
+DELETE FROM `CIRCO`.`ATRACCION_DIA` WHERE (`nombre_atraccion` = 'El orangután') and (`fecha` = '2020-03-02');
+
+########## CURSORES ##########
+
+# Ejemplo 1 teoría
+
+# Declarar un cursor en el que seleccionaremos los artistas que no tengan jefe:
+
+# Ejercicio 1
+# Crea un procedimiento de nombre atracciones_checkGanancias en el que queremos comprobar si las ganancias totales de cada atracción coinciden con la suma de las ganancias de los días en los que se celebró.
+# El procedimiento debe devolver una cadena con el formato: atraccion1:gananciatotal:gananciasumada, atraccion2:gananciatotal:gananciasumada con las atracciones que no cumplen que la suma sea igual
+
+
+  DROP PROCEDURE IF EXISTS atracciones_checkGanancias;
+  DELIMITER $$
+  CREATE PROCEDURE atracciones_checkGanancias()
+  COMMENT 'Devuelve las atracciones cuya suma total de ganancias no coincide con la suma de las ganancias diarias.'
+  BEGIN
+     # Declaración de variables
+     DECLARE v_final INTEGER DEFAULT 0;
+     DECLARE v_atraccion varchar(50);
+     DECLARE v_ganTotales int;
+     DECLARE v_ganTotalesPorDia int;
+     DECLARE v_cadenaSalida varchar(1000) default '';	-- Cuidado con el valor (null) por defecto para concatenar.
+     
+     # Declaración del cursor
+     DECLARE c_checkGanancias CURSOR FOR 
+         SELECT nombre, ganancias
+         FROM ATRACCIONES;
+     DECLARE CONTINUE HANDLER FOR NOT FOUND SET v_final = TRUE;
+     
+     # Apertura del cursor
+     OPEN c_checkGanancias;
+ 
+     read_loop: LOOP
+         FETCH c_checkGanancias INTO v_atraccion,v_ganTotales;
+ 
+         IF v_final=TRUE THEN
+             LEAVE read_loop;
+         END IF;
+         
+         SELECT SUM(ganancias)
+         INTO v_ganTotalesPorDia
+         FROM ATRACCION_DIA
+         WHERE nombre_atraccion = v_atraccion;
+ 
+         IF (v_ganTotalesPorDia!=v_ganTotales) THEN
+             SET v_cadenaSalida = IF (v_cadenaSalida!='',CONCAT(v_cadenaSalida,', '),'');	-- Para separar una atracción de otra
+             SET v_cadenaSalida = CONCAT(v_cadenaSalida,v_atraccion,':',v_ganTotales,':',v_ganTotalesPorDia);
+         END IF;
+     END LOOP;
+ 
+     CLOSE c_checkGanancias; 
+     
+     SELECT v_cadenaSalida as listaatracciones;
+ END$$
+ DELIMITER ;
+
+CALL atracciones_checkGanancias();
+
+# Ejercicio 2
+# Crea un procedimiento de nombre artistas_addSuplementoPorCuidados, que compruebe a cuantos animales cuida cada uno de los artistas. 
+# Aquellos artistas que cuidan más de un número de animales indicados por un parámetro se les dará un plus a su nómina igual al número de animales que cuida multiplicado por 100 euros. 
+# Muestra el nombre y complemento de cada artista así como la suma de todos los complementos.
+# El resultado debe aparecer como una única consulta (no valen varios SELECT).
+# Para ello haz uso de una tabla temporal que vaya guardando los datos (el nombre completo y el suplemento de la ganancia) y posteriormente haz un SELECT de dicha tabla. 
+# Para crear una tabla temporal haz uso de la sentencia CREATE TEMPORARY TABLE. Dicha orden debe ir después de la orden DECLARE CONTINUE HANDLER del cursor.
+# Recuerda borrar la tabla temporal al salir del procedimiento.
+
+USE CIRCO;
+  DROP PROCEDURE IF EXISTS artistas_addSuplementoPorCuidados;
+  
+  DELIMITER $$
+  CREATE PROCEDURE artistas_addSuplementoPorCuidados(p_numAnimales tinyint)
+
+  BEGIN
+      # Declaración de variables
+	 DECLARE v_final INTEGER DEFAULT 0;
+     DECLARE v_nif CHAR(9);
+     DECLARE v_numAnimales TINYINT default 0;
+     DECLARE v_complementoTotal INT DEFAULT 0;
+     DECLARE v_apellidos VARCHAR(100);
+     DECLARE v_nombre VARCHAR(45);
+ 
+     # Declaración del cursor
+     DECLARE c_complemento CURSOR FOR 
+		 # Selecciona los artistas que cuidan más animales que los introducidos como parámetro (p_numAnimales)
+         SELECT nif_artista,COUNT(*)
+         FROM ANIMALES_ARTISTAS
+         GROUP BY nif_artista
+         HAVING COUNT(*) > p_numAnimales;
+         
+     DECLARE CONTINUE HANDLER FOR NOT FOUND SET v_Final = TRUE;
+ 
+     CREATE TEMPORARY TABLE T_TEMPORAL (nombre_completo varchar(150), suplemento decimal(6,2));
+     
+     # Apertura del cursor
+     OPEN c_complemento;
+ 
+     read_loop: LOOP
+         FETCH c_complemento INTO v_nif, v_numAnimales;
+         IF v_final THEN
+             LEAVE read_loop;
+         END IF;
+         
+         IF (v_numAnimales > p_numAnimales) THEN
+             SELECT apellidos, nombre
+             INTO v_apellidos, v_nombre
+             FROM ARTISTAS
+             WHERE nif = v_nif;
+             
+             INSERT INTO T_TEMPORAL 
+             VALUES (CONCAT(v_apellidos,', ',v_nombre),v_numAnimales*100);
+             SET v_complementoTotal = v_complementoTotal + v_numAnimales*100;
+             
+         END IF;
+ 
+     END LOOP;
+
+     INSERT INTO T_TEMPORAL 
+     VALUES ('Suplemento total',v_complementoTotal);
+ 
+     SELECT nombre_completo, suplemento
+     FROM T_TEMPORAL;
+ 
+     CLOSE c_complemento;   
+     
+    DROP TEMPORARY TABLE T_TEMPORAL;
+ 
+ END$$
+ DELIMITER ;
+
+call artistas_addSuplementoPorCuidados(2);
+
+######## PREPARED STATEMENTS ###########
+
+# Ejemplo 1 teoría
+
+# Crea un procedimiento de nombre animales_getListPorFiltro que devuelva la lista de animales filtrados por columnas dinámicamente. 
+# Los datos a enviar será el nombre de la columna, el tipo de operación y el valor que debe cumplir. Por ejemplo, 'anhos','=','2'.
+
+USE CIRCO;
+
+DELIMITER $$
+CREATE PROCEDURE animales_getListPorFiltro (p_nombreColum varchar(20),p_operacion char(2),p_valorParam varchar(10))		
+    COMMENT 'Devuelve todos los animales que cumplan la condición que se la va pasar como parámetro.'
+BEGIN
+    
+    SET @v_consulta = CONCAT('SELECT * FROM ANIMALES WHERE ',p_nombreColum,p_operacion,'?');	-- Podríamos poner como tercer parámetro directamente el parámetro p_valorParam
+    SET @v_valor = p_valorParam;
+    PREPARE prepConsulta FROM @v_consulta;
+    EXECUTE prepConsulta USING @v_valor;
+    DEALLOCATE PREPARE prepConsulta;
+
+END $$
+DELIMITER ;
+
+CALL animales_getListPorFiltro('tipo','=','Jirafa');
+CALL animales_getListPorFiltro('anhos','>=','3');
+
+
+# Ejercicio 1
+# Crea un procedimiento de nombre animales_getListFiltroNumeroColum que devuelva el número de animales indicado por el parámetro. 
+# También se le pasará en otro parámetro las columnas que debe mostrar de la forma 'col1,col3,col5'.
+# Nota: Este procedimiento sería un buen candidato para aplicar el control de excepciones de Mysql y controlar si enviamos una columna que no existe.
+
+USE CIRCO;
+DROP PROCEDURE IF EXISTS animales_getListFiltroNumeroColum;
+DELIMITER $$
+CREATE PROCEDURE animales_getListFiltroNumeroColum (p_columnas varchar(100),p_numero int)		
+BEGIN
+    SET @v_consulta = CONCAT('SELECT ',p_columnas,' FROM ANIMALES LIMIT ?');	-- Añadir espacios en blanco despúes del SELECT y antes del FROM
+    SET @v_columnas = p_columnas;
+    SET @v_numero = p_numero;
+    PREPARE prepConsulta_animales_getListFiltroNumeroColum FROM @v_consulta;	
+    EXECUTE prepConsulta_animales_getListFiltroNumeroColum USING @v_numero;
+    DEALLOCATE PREPARE prepConsulta_animales_getListFiltroNumeroColum;
+
+
+END $$
+DELIMITER ;
+
+CALL animales_getListFiltroNumeroColum('nombre,anhos',2);
+CALL animales_getListFiltroNumeroColum('nombre,tipo,peso',4);
+
+
+# Ejercicio 2
+# Crea un procedimiento de nombre animales_getListFiltroPista que devuelva la lista de animales que trabajan en las pistas que se envían como parámetro en formato 'pista1,pista2,..'.
+# En caso de que no se envíe dato (valor null) debe mostrar todos los animales.
+
+USE CIRCO;
+DROP PROCEDURE IF EXISTS animales_getListFiltroPista;
+DELIMITER $$
+CREATE PROCEDURE animales_getListFiltroPista (p_pistas varchar(100))		
+BEGIN
+	IF (p_pistas IS NOT NULL) THEN
+		SET @v_consulta = CONCAT('SELECT * FROM ANIMALES WHERE nombre_pista IN (',p_pistas,')');
+        select @v_consulta;
+		-- SET @v_consulta = 'SELECT * FROM ANIMALES WHERE nombre_pista IN (?)';
+		PREPARE prepConsulta_animales_getListFiltroPista FROM @v_consulta;
+		-- SET @v_pistas = p_pistas;
+		EXECUTE prepConsulta_animales_getListFiltroPista;
+		DEALLOCATE PREPARE prepConsulta_animales_getListFiltroPista;
+	ELSE
+		SELECT * FROM ANIMALES ORDER BY nombre;
+    END IF;
+END $$
+DELIMITER ;
+
+CALL animales_getListFiltroPista('\'LATERAL1\'');
+CALL animales_getListFiltroPista('\'LATERAL2\',\'SUPER\'');
+
+# Ejercicio 3
+# Crea un procedimiento de nombre animales_getByAnoPeso al que se le pasen dos parámetros (peso y año) y en función de si llevan valor o no, 
+# haz que devuelva los animales que cumplan los criterios de búsqueda.
+
+DROP PROCEDURE IF EXISTS animales_getByAnoPeso;
+DELIMITER $$
+CREATE PROCEDURE animales_getByAnoPeso(p_ano smallint, p_peso float)
+BEGIN
+     SET @consulta = 'SELECT * FROM animales WHERE 1=1';
+
+     IF (p_peso is not null) THEN
+         SET @consulta = CONCAT(@consulta,' AND peso = ',p_peso);
+     END IF;
+     IF (p_ano is not null) THEN
+         SET @consulta = CONCAT(@consulta,' AND anhos = ',p_ano);
+     END IF;
+
+     PREPARE prepareConsulta FROM @consulta;
+     EXECUTE prepareConsulta;
+     DEALLOCATE PREPARE prepareConsulta;
+
+END $$
+DELIMITER ;
+
+
+CALL animales_getByAnoPeso(2,null);
+CALL animales_getByAnoPeso(null,2.3);
+CALL animales_getByAnoPeso(4,1);
