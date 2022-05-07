@@ -1,7 +1,10 @@
 USE `CIRCO`;
 
+#Variables de sesión
 SET @nombreAnimalSinArtista="";
 
+# Asignación de valor a variables mediante una consulta
+# (El número de columnas y variables debe de ser el mismo)
 SELECT anhos,peso
 INTO @anhos,@peso
 FROM ANIMALES
@@ -10,9 +13,6 @@ WHERE nombre="Caiman";
 SELECT @anhos;
 SELECT @peso;
 
-SELECT anhos
-FROM ANIMALES
-WHERE nombre="Caiman";
 
 SELECT nombre INTO @nombreAnimalSinArtista FROM animales WHERE nombre NOT IN(SELECT nombre_animal FROM animales_artistas);
 SELECT @nombreAnimalSinArtista;
@@ -20,16 +20,15 @@ SELECT @nombreAnimalSinArtista;
 INSERT INTO animales_artistas VALUES(@nombreAnimalSinArtista,'11111111A');
 
 
+# Procedimiento sin parámetros
+DROP PROCEDURE IF EXISTS animales_getList;
 DELIMITER $$
-
 CREATE PROCEDURE animales_getList()
 BEGIN
     SELECT nombre
     FROM ANIMALES
     ORDER BY nombre;
-
 END$$
-
 DELIMITER ;
 
 CALL animales_getList();
@@ -215,12 +214,13 @@ SELECT @dato;
 
 ###########FUNCIONES##############
 
-DELIMITER //
+DROP FUNCTION IF EXISTS  ejemploFuncion;
+DELIMITER $$
 CREATE FUNCTION ejemploFuncion() RETURNS VARCHAR(20) DETERMINISTIC
 BEGIN
     RETURN 'Ejemplo';
-END
-//
+END $$
+DELIMITER ;
 
 SELECT ejemploFuncion();
 
@@ -228,7 +228,7 @@ SELECT @@log_bin;
 
 #1 Crea una función de nombre utilidades_getMesEnLetra a la que se le pase un número y devuelva el nombre del mes. En caso de que el número no se corresponda con ningún mes, debe devolver null.
 DROP FUNCTION IF EXISTS utilidades_getMesEnLetra;
-DELIMITER //
+DELIMITER $$
 CREATE FUNCTION utilidades_getMesEnLetra(p_mes VARCHAR(50)) RETURNS VARCHAR(10) DETERMINISTIC
 BEGIN
     DECLARE v_mesEnLetra VARCHAR(10) DEFAULT NULL;
@@ -247,7 +247,7 @@ BEGIN
         WHEN 12 THEN SET v_mesEnLetra="DICIEMBRE";
 	END CASE;
     RETURN v_mesEnLetra;
-END//
+END $$
 DELIMITER ;
 
 # Llama a la función directamente y guarda el resultado en una variable de sesión.
@@ -808,19 +808,20 @@ label_getSumAforo: BEGIN
             INTO v_nombrePista;
             
             set v_index = v_pos+1;
-        ELSE    -- Bucle final que hara cuando no encuentre ',' que será la última pista
+        ELSE    # Bucle final que hara cuando no encuentre ',' que será la última pista
             SELECT SUBSTRING(p_pistas,v_index)
             INTO v_nombrePista;
         END IF;
-        
-        SET v_aforo = null; #Si la pista no existe el valor de la variable seguirá valiendo NULL
+         
+         # Si la pista no existe el valor de la variable seguirá valiendo NULL
+        SET v_aforo = null;
 
         SELECT aforo
         INTO v_aforo
         FROM PISTAS
         WHERE nombre = v_nombrePista;
         
-        #Si el aforo es null, es que la pista no existe
+        # Si el aforo es null, es que la pista no existe
         IF (v_aforo IS NULL) THEN 	
             SELECT CONCAT('La pista ',v_nombrePista,' no existe');
         ELSE
@@ -860,7 +861,8 @@ label_getGananciasSupuestas: BEGIN
     DECLARE v_precio tinyint default 0;
     DECLARE v_atraccionExiste tinyint;	-- Para comprobar si la atraccion existe
 
-    SELECT COUNT(*)		-- Comprobamos si la atraccion existe
+	# Comprobamos si la atraccion existe
+    SELECT COUNT(*)		
     INTO v_atraccionExiste
     FROM ATRACCIONES
     WHERE nombre = p_nombreAtraccion;
@@ -869,7 +871,8 @@ label_getGananciasSupuestas: BEGIN
         LEAVE label_getGananciasSupuestas; 
     END IF;
 
-    SELECT COUNT(*)		-- Comprobamos si tiene alguna atraccion
+	# Comprobamos si tiene alguna atraccion
+    SELECT COUNT(*)		
     INTO v_atraccionExiste
     FROM ATRACCION_DIA
     WHERE nombre_atraccion = p_nombreAtraccion;
@@ -915,7 +918,8 @@ CREATE PROCEDURE utilidades_getNumImpares (p_numero1 int, p_numero2 int,p_multip
 BEGIN
     DECLARE v_temporal int default 0;
     
-    IF (p_numero1 > p_numero2) THEN		-- Intercambiamos los números si el segundo es inferior al primero
+    # Intercambiamos los números si el segundo es inferior al primero
+    IF (p_numero1 > p_numero2) THEN		
         SET v_temporal = p_numero2;
         SET p_numero2 = p_numero1;
         SET p_numero1 = v_temporal;
@@ -1084,7 +1088,7 @@ DELETE FROM `CIRCO`.`ATRACCION_DIA` WHERE (`nombre_atraccion` = 'El orangután')
 # El procedimiento debe devolver una cadena con el formato: atraccion1:gananciatotal:gananciasumada, atraccion2:gananciatotal:gananciasumada con las atracciones que no cumplen que la suma sea igual
 
 
-  DROP PROCEDURE IF EXISTS atracciones_checkGanancias;
+ DROP PROCEDURE IF EXISTS atracciones_checkGanancias;
   DELIMITER $$
   CREATE PROCEDURE atracciones_checkGanancias()
   COMMENT 'Devuelve las atracciones cuya suma total de ganancias no coincide con la suma de las ganancias diarias.'
@@ -1098,6 +1102,7 @@ DELETE FROM `CIRCO`.`ATRACCION_DIA` WHERE (`nombre_atraccion` = 'El orangután')
      
      # Declaración del cursor
      DECLARE c_checkGanancias CURSOR FOR 
+		#Recorrera para cada atraccion con sus ganancias
          SELECT nombre, ganancias
          FROM ATRACCIONES;
      DECLARE CONTINUE HANDLER FOR NOT FOUND SET v_final = TRUE;
@@ -1107,24 +1112,33 @@ DELETE FROM `CIRCO`.`ATRACCION_DIA` WHERE (`nombre_atraccion` = 'El orangután')
  
      read_loop: LOOP
          FETCH c_checkGanancias INTO v_atraccion,v_ganTotales;
- 
+		 
+         # Sentencia para salir del Loop
          IF v_final=TRUE THEN
              LEAVE read_loop;
          END IF;
          
+         # Consulta que calcula la suma de ganancias de cada atracción en la tabla atraccion_dia
          SELECT SUM(ganancias)
          INTO v_ganTotalesPorDia
          FROM ATRACCION_DIA
          WHERE nombre_atraccion = v_atraccion;
  
+		# Si la ganancia total de la tabla atracción es distinta que la suma de ganancias de la tabla atracción_dia
          IF (v_ganTotalesPorDia!=v_ganTotales) THEN
-             SET v_cadenaSalida = IF (v_cadenaSalida!='',CONCAT(v_cadenaSalida,', '),'');	-- Para separar una atracción de otra
+			# Si la cadena no es la primera, le concateno una ', '
+			IF (v_cadenaSalida!='') THEN
+             SET v_cadenaSalida = CONCAT(v_cadenaSalida,', ');	
+             END IF;
+             # Concateno la v_cadenaSalida (si no es la primera), el nombre de la atracción, las ganancias de la tabla atracciones
+             # y la ganancias de la tabla atraccion_dia para ver la diferencia
              SET v_cadenaSalida = CONCAT(v_cadenaSalida,v_atraccion,':',v_ganTotales,':',v_ganTotalesPorDia);
          END IF;
      END LOOP;
  
      CLOSE c_checkGanancias; 
      
+     # Devuelve el resultado de todas las cadenas concatenadas
      SELECT v_cadenaSalida as listaatracciones;
  END$$
  DELIMITER ;
@@ -1162,46 +1176,56 @@ USE CIRCO;
          FROM ANIMALES_ARTISTAS
          GROUP BY nif_artista
          HAVING COUNT(*) > p_numAnimales;
-         
      DECLARE CONTINUE HANDLER FOR NOT FOUND SET v_Final = TRUE;
  
+	 # Creación de la tabla temporal
      CREATE TEMPORARY TABLE T_TEMPORAL (nombre_completo varchar(150), suplemento decimal(6,2));
      
      # Apertura del cursor
      OPEN c_complemento;
  
      read_loop: LOOP
+		 # En la parte INTO deben ir tantas variables como columnas tengamos en la sentencia SELECT del cursor
          FETCH c_complemento INTO v_nif, v_numAnimales;
+         # Sentencia para salir del Loop
          IF v_final THEN
              LEAVE read_loop;
          END IF;
          
+         # Este if entiendo que sobra, en teoria el cursor solo admite ya los cuidadores que tienen más animales que los 
+         # introducidos por parámetros.
          IF (v_numAnimales > p_numAnimales) THEN
              SELECT apellidos, nombre
              INTO v_apellidos, v_nombre
              FROM ARTISTAS
              WHERE nif = v_nif;
              
-             INSERT INTO T_TEMPORAL 
-             VALUES (CONCAT(v_apellidos,', ',v_nombre),v_numAnimales*100);
-             SET v_complementoTotal = v_complementoTotal + v_numAnimales*100;
+             # Insertamos en la tabla temporal los apellidos y el suplemento= cantidad de animales *100
+             INSERT INTO T_TEMPORAL VALUES (CONCAT(v_apellidos,', ',v_nombre),v_numAnimales*100);
              
+             # Sumatorio para ir calculando el suplemento total que se insertará cuando se salga del bucle
+             SET v_complementoTotal = v_complementoTotal + v_numAnimales*100;
          END IF;
  
      END LOOP;
 
-     INSERT INTO T_TEMPORAL 
-     VALUES ('Suplemento total',v_complementoTotal);
+	 # Insertamos el suplemento total
+     INSERT INTO T_TEMPORAL VALUES ('Suplemento total',v_complementoTotal);
  
+	 # Devolvemos como resultado la tabla temporal
      SELECT nombre_completo, suplemento
      FROM T_TEMPORAL;
  
+	# Cerramos el cursor
      CLOSE c_complemento;   
      
+	# Eliminamos la tabla temporal
     DROP TEMPORARY TABLE T_TEMPORAL;
  
  END$$
  DELIMITER ;
+
+call artistas_addSuplementoPorCuidados(2);
 
 call artistas_addSuplementoPorCuidados(2);
 
@@ -1218,8 +1242,8 @@ DELIMITER $$
 CREATE PROCEDURE animales_getListPorFiltro (p_nombreColum varchar(20),p_operacion char(2),p_valorParam varchar(10))		
     COMMENT 'Devuelve todos los animales que cumplan la condición que se la va pasar como parámetro.'
 BEGIN
-    
-    SET @v_consulta = CONCAT('SELECT * FROM ANIMALES WHERE ',p_nombreColum,p_operacion,'?');	-- Podríamos poner como tercer parámetro directamente el parámetro p_valorParam
+    # Podríamos poner como tercer parámetro directamente el parámetro p_valorParam
+    SET @v_consulta = CONCAT('SELECT * FROM ANIMALES WHERE ',p_nombreColum,p_operacion,'?');	
     SET @v_valor = p_valorParam;
     PREPARE prepConsulta FROM @v_consulta;
     EXECUTE prepConsulta USING @v_valor;
