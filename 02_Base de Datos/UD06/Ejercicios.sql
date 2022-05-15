@@ -5,6 +5,7 @@ SET @nombreAnimalSinArtista="";
 
 # Asignación de valor a variables mediante una consulta
 # (El número de columnas y variables debe de ser el mismo)
+
 SELECT anhos,peso
 INTO @anhos,@peso
 FROM ANIMALES
@@ -39,15 +40,12 @@ CALL animales_getList();
 #Crea un procedimiento de nombre artistas_getList() que devuelva el nombre y apellidos de los artistas separados por coma con el formato: apellidos,nombre ordenados de forma descendente.
 
 DELIMITER $$
-
 CREATE PROCEDURE artistas_getList()
 BEGIN
     SELECT CONCAT(apellidos,', ',nombre) 'Nombres'
     FROM artistas
     ORDER BY apellidos DESC;
-
 END$$
-
 DELIMITER ;
 
 CALL artistas_getList();
@@ -224,7 +222,6 @@ DELIMITER ;
 
 SELECT ejemploFuncion();
 
-SELECT @@log_bin;
 
 #1 Crea una función de nombre utilidades_getMesEnLetra a la que se le pase un número y devuelva el nombre del mes. En caso de que el número no se corresponda con ningún mes, debe devolver null.
 DROP FUNCTION IF EXISTS utilidades_getMesEnLetra;
@@ -264,69 +261,83 @@ SHOW CREATE TABLE atraccion_dia;
 SELECT nombre_atraccion FROM atraccion_dia WHERE utilidades_getMesEnLetra(MONTH(fecha))="ABRIL" COLLATE "utf8mb4_spanish2_ci";
 
 # 2. Modifica un ejercicio anterior en el que creamos el procedimiento de nombre 'atracciones_getNumPorMes' y crea una función de nombre utilidades_getMesEnNumero a 
-#la que se le pase el nombre de un mes y devuelva el número que se corresponde con ese nombre. Si el mes no existe debe devolver -1. 
-#Modifica el procedimiento para que haga uso de la función.
+# la que se le pase el nombre de un mes y devuelva el número que se corresponde con ese nombre. Si el mes no existe debe devolver -1. 
+# Modifica el procedimiento para que haga uso de la función.
 
-#Creación de la función. Como la anterior, pero al revés
+# Creación de la función. Como la anterior, pero al revés
 
 DROP FUNCTION IF EXISTS utilidades_getMesEnNumero;
-DELIMITER //
-	CREATE FUNCTION utilidades_getMesEnNumero (p_mes VARCHAR(20)) RETURNS INTEGER DETERMINISTIC
+DELIMITER $$
+CREATE FUNCTION utilidades_getMesEnNumero (p_mes VARCHAR(20)) RETURNS INTEGER DETERMINISTIC
     BEGIN
 		DECLARE v_mesEnNumero INT DEFAULT -1;
     CASE p_mes 
-		WHEN "ENERO" THEN SET v_mesEnLetra=1;
-        WHEN "FEBRERO" THEN SET v_mesEnLetra=2;
-        WHEN "MARZO" THEN SET v_mesEnLetra=3;
-        WHEN "ABRIL" THEN SET v_mesEnLetra=4;
-        WHEN "MAYO" THEN SET v_mesEnLetra=5;
-        WHEN "JUNIO" THEN SET v_mesEnLetra=6;
-        WHEN "JULIO" THEN SET v_mesEnLetra=7;
-        WHEN "AGOSTO" THEN SET v_mesEnLetra=8;
-        WHEN "SEPTIEMBRE" THEN SET v_mesEnLetra=9;
-        WHEN "OCTUBRE" THEN SET v_mesEnLetra=10;
-        WHEN "NOVIEMBRE" THEN SET v_mesEnLetra=11;
-        WHEN "DICIEMBRE" THEN SET v_mesEnLetra=12;
+		WHEN "ENERO" THEN SET v_mesEnNumero=1;
+        WHEN "FEBRERO" THEN SET v_mesEnNumero=2;
+        WHEN "MARZO" THEN SET v_mesEnNumero=3;
+        WHEN "ABRIL" THEN SET v_mesEnNumero=4;
+        WHEN "MAYO" THEN SET v_mesEnNumero=5;
+        WHEN "JUNIO" THEN SET v_mesEnNumero=6;
+        WHEN "JULIO" THEN SET v_mesEnNumero=7;
+        WHEN "AGOSTO" THEN SET v_mesEnNumero=8;
+        WHEN "SEPTIEMBRE" THEN SET v_mesEnNumero=9;
+        WHEN "OCTUBRE" THEN SET v_mesEnNumero=10;
+        WHEN "NOVIEMBRE" THEN SET v_mesEnNumero=11;
+        WHEN "DICIEMBRE" THEN SET v_mesEnNumero=12;
 	END CASE;
     RETURN v_mesEnNumero;   
-    END //
+    END $$
 DELIMITER ;
 
-##Metemos la funcion en el procedimiento
+SET @MES=utilidades_getMesEnNumero("ENERO");
+SELECT @MES;
 
-DROP PROCEDURE IF EXISTS atracciones_getNumPorMes;
-DELIMITER //
-	CREATE PROCEDURE atracciones_getNumPorMesConFuncion(p_mes VARCHAR(10), p_ano INT, OUT p_numAtracciones in)
+## Metemos la funcion en el procedimiento
+USE CIRCO;
+DROP PROCEDURE IF EXISTS atracciones_getNumPorMesConFuncion;
+DELIMITER $$
+CREATE PROCEDURE atracciones_getNumPorMesConFuncion(p_mesEnLetra VARCHAR(10),p_ano INT, OUT p_numAtraccionesTotales INT)
+    COMMENT 'Calcula la suma de todas las atracciones celebradas en el mes y año indicado y devolver el dato en un parámetro de salida'
+label_proc: BEGIN
     DECLARE v_mesEnNumero INT DEFAULT 0;
-    DECLARE v_dia INT DEFAULT 1;
-    DECLARE v_numAtracionPorDia INT;
-    SET p_numAtracciones=0;
-    SET v_mesEnNumero=utilidades_getMesEnNumero(p_mes);
-    IF(v_mesEnNumero=-1) THEN
-		SET p_numAtracciones=-1;
-        LEAVE label_prod;
-	END IF;
-    
-    IF(p_ano IS NULL) THEN
-		SET p_ano=YEAR(curdate());
-	END IF;
-    
-    bucle_dia: WHILE (v_dia<=31) DO
-    IF(DATE(CONCAT(p_ano,'-',v_mesEnNumero,'-',v_dia)) IS NULL) THEN
-    LEAVE bucle_dia;
+    DECLARE v_dia INT DEFAULT 1;	
+    DECLARE v_numAtraccPorDia INT;
+	#Inicializamos el parametro de salida a cero para poder usarlo
+    SET p_numAtraccionesTotales = 0;	
+	
+    SET v_mesEnNumero = utilidades_getMesEnNumero(p_mesEnLetra);
+    IF (v_mesEnNumero=-1) THEN
+        SET p_numAtracciones = -1;
+        LEAVE label_proc;		-- Sale del procedimiento
     END IF;
     
-    SELECT COUNT(*)
-    INTO v_numAtracionPorDia
-    FROM atraccion_dia
-    WHERE fecha=CONCAT(p_ano,'-',v_mesEnNumero,'-',v_dia);
-    SET v_dia=v_dia+1;
-    SET p_numAtracciones=p_numAtracciones+v_numAtracionPorDia;
+    #Si el año es nulo, le damos el actual
+    IF (p_ano IS NULL) THEN
+        SET p_ano = YEAR(curdate());
+    END IF;
     
-    
-    END WHILE bucle_dia;
+    bucle_dia: WHILE (v_dia <= 31) DO
+		# Si la fecha es inválida se sale de bucle
+        IF (DATE(CONCAT(p_ano,'-',v_mesEnNumero,'-',v_dia)) IS NULL) THEN
+            LEAVE bucle_dia;
+        END IF;
 
+        SELECT COUNT(*)
+        INTO v_numAtraccPorDia
+        FROM ATRACCION_DIA
+        WHERE fecha = CONCAT(p_ano,'-',v_mesEnNumero,'-',v_dia);
+        
+        SET v_dia = v_dia+1;
+        SET p_numAtraccionesTotales = p_numAtraccionesTotales + v_numAtraccPorDia;
+    END WHILE bucle_dia;
+END$$
 DELIMITER ;
+
+SET @num=0;
+CALL atracciones_getNumPorMesConFuncion("ABRIL",2000,@num);
+
+SELECT @num;
+
 
 #Crea una función de nombre animales_getEstadoPorAnhos que devuelva la cadena:
 #Si tipo = León
@@ -340,7 +351,7 @@ DELIMITER ;
 #Llama a la función para mostrar el estado por años de cada uno de los animales del CIRCO.
 
 DROP FUNCTION IF EXISTS animales_getEstadoPorAnhos;
-DELIMITER //
+DELIMITER $$
 	CREATE FUNCTION animales_getEstadoPorAnhos(p_tipo VARCHAR(20), p_anos INT) RETURNS VARCHAR(8) DETERMINISTIC
     BEGIN
 		DECLARE v_cadena VARCHAR(20);
@@ -356,7 +367,7 @@ DELIMITER //
             END IF;
 		END IF;
     RETURN v_cadena;   
-    END //
+    END $$
 DELIMITER ;
 
 SET @estado=animales_getEstadoPorAnhos("León",2);
@@ -378,14 +389,14 @@ FROM animales;
 
 DROP PROCEDURE IF EXISTS artistas_getPorNif;
 DELIMITER $$
-CREATE PROCEDURE artistas_getPorNif(IN p_nif char(9))		
+CREATE PROCEDURE artistas_getPorNif(IN p_nif CHAR(9))		
 BEGIN
-    DECLARE v_nifArt,v_nifJefe char(9);		-- No ponemos default, por lo tanto el valor por defecto es NULL
-    DECLARE v_nombreArt,v_nombreJefe varchar(45);
-    DECLARE v_apellArt,v_apellJefe varchar(100);
+    DECLARE v_nifArt,v_nifJefe CHAR(9);		-- No ponemos default, por lo tanto el valor por defecto es NULL
+    DECLARE v_nombreArt,v_nombreJefe VARCHAR(45);
+    DECLARE v_apellArt,v_apellJefe VARCHAR(100);
     
-    DECLARE v_cadenaArtista varchar(400);
-    DECLARE v_cadenaJefe varchar(400);
+    DECLARE v_cadenaArtista VARCHAR(400);
+    DECLARE v_cadenaJefe VARCHAR(400);
     
     # Consulta reflexiva
     SELECT A.nif,A.nombre,A.apellidos,J.nif,J.nombre,J.apellidos
@@ -418,7 +429,7 @@ CALL artistas_getPorNif('22222222X');  -- No existe Artista
 USE CIRCO;
 DROP PROCEDURE IF EXISTS utilidades_getDia;
 DELIMITER $$
-CREATE PROCEDURE utilidades_getDia(p_numDia tinyint, OUT p_nombreDia varchar(9))		
+CREATE PROCEDURE utilidades_getDia(p_numDia INT, OUT p_nombreDia VARCHAR(9))		
 BEGIN
 		CASE p_numDia
 			WHEN 1 THEN 
@@ -1015,7 +1026,7 @@ INSERT INTO `CIRCO`.`ANIMALES` (`nombre`,`tipo`,`anhos`,`peso`,`estatura`,`nombr
 # Ejercicio 3
 # Haz todo lo necesario para que el campo ganancias de la tabla ATRACCIONES se actualice cuando se añadan, borren o modifiquen datos en la tabla ATRACCION_DIA.
 # Solución: EL proceso para crear un trigger como comenté antes es:
-#    • Identificar la tabla sobre la que vamos a crear el trigger => ATRACCIONES
+#    • Identificar la tabla sobre la que vamos a crear el trigger => ATRACCION_DIA
 #    • Identificar la operación sobre la que se va a crear el trigger => INSERT, UPDATE, DELETE
 #    • Identificar si queremos que el trigger se ejecuta antes o después: Queremos actualizar el campo ganancias una vez se ha actualizado la fila ATRACCION_DIA por lo tanto el trigger tiene que ser AFTER.
 # Para acceder a los datos que estamos queriendo AÑADIR, debemos de hacer uso de la tabla NEW.
@@ -1025,21 +1036,13 @@ INSERT INTO `CIRCO`.`ANIMALES` (`nombre`,`tipo`,`anhos`,`peso`,`estatura`,`nombr
 USE CIRCO;
   DROP TRIGGER IF EXISTS atracciones_actualizarGananciasTotales_INSERT;
   DELIMITER $$
-  # Trigger para cuando se inserta
+  # Trigger para cuando se INSERTA
   CREATE TRIGGER atracciones_actualizarGananciasTotales_INSERT AFTER INSERT ON ATRACCION_DIA FOR EACH ROW
   BEGIN
-      DECLARE v_fecha date;
-      
-      # Consulta para actualizar la fecha, aunque el enunciado no lo pide
-	SELECT IFNULL(fecha_inicio,CURDATE()) 
-     INTO v_fecha
-     FROM ATRACCIONES
-     WHERE nombre = NEW.nombre_atraccion;
      
      # Actualiza el campo ganancias de atracciones, sumándole las nuevas ganancias  (También mete la fecha actual)  
      UPDATE ATRACCIONES
-     SET ganancias = IFNULL(ganancias,0) + NEW.ganancias,
-         fecha_inicio = v_fecha
+     SET ganancias = IFNULL(ganancias,0) + NEW.ganancias
      WHERE nombre = NEW.nombre_atraccion;
  END $$
  DELIMITER ;
@@ -1049,7 +1052,7 @@ INSERT INTO `CIRCO`.`ATRACCION_DIA` (`nombre_atraccion`, `fecha`, `num_espectado
 
 
 USE CIRCO;
-  # Trigger cuando se actualiza
+  # Trigger cuando se ACTUALIZA
   DROP TRIGGER IF EXISTS atracciones_actualizarGananciasTotales_UPDATE;
   DELIMITER $$
   CREATE TRIGGER atracciones_actualizarGananciasTotales_UPDATE AFTER UPDATE ON ATRACCION_DIA FOR EACH ROW
@@ -1064,7 +1067,7 @@ USE CIRCO;
  UPDATE `CIRCO`.`ATRACCION_DIA` SET `ganancias` = '35000.00' WHERE (`nombre_atraccion` = 'El orangután') and (`fecha` = '2020-03-02');
 
 USE CIRCO;
-  # Trigger cuando se borra
+  # Trigger cuando se BORRA
   DROP TRIGGER IF EXISTS atracciones_actualizarGananciasTotales_DELETE;
   DELIMITER $$
   CREATE TRIGGER atracciones_actualizarGananciasTotales_DELETE AFTER DELETE ON ATRACCION_DIA FOR EACH ROW
@@ -1102,7 +1105,7 @@ DELETE FROM `CIRCO`.`ATRACCION_DIA` WHERE (`nombre_atraccion` = 'El orangután')
      
      # Declaración del cursor
      DECLARE c_checkGanancias CURSOR FOR 
-		#Recorrera para cada atraccion con sus ganancias
+		# Recorrera para cada atraccion con sus ganancias
          SELECT nombre, ganancias
          FROM ATRACCIONES;
      DECLARE CONTINUE HANDLER FOR NOT FOUND SET v_final = TRUE;
@@ -1121,7 +1124,7 @@ DELETE FROM `CIRCO`.`ATRACCION_DIA` WHERE (`nombre_atraccion` = 'El orangután')
          # Consulta que calcula la suma de ganancias de cada atracción en la tabla atraccion_dia
          SELECT SUM(ganancias)
          INTO v_ganTotalesPorDia
-         FROM ATRACCION_DIA
+         FROM atraccion_dia
          WHERE nombre_atraccion = v_atraccion;
  
 		# Si la ganancia total de la tabla atracción es distinta que la suma de ganancias de la tabla atracción_dia
@@ -1143,7 +1146,7 @@ DELETE FROM `CIRCO`.`ATRACCION_DIA` WHERE (`nombre_atraccion` = 'El orangután')
  END$$
  DELIMITER ;
 
-CALL atracciones_checkGanancias();
+CALL atracciones_checkGanancias(); 
 
 # Ejercicio 2
 # Crea un procedimiento de nombre artistas_addSuplementoPorCuidados, que compruebe a cuantos animales cuida cada uno de los artistas. 
@@ -1158,7 +1161,7 @@ USE CIRCO;
   DROP PROCEDURE IF EXISTS artistas_addSuplementoPorCuidados;
   
   DELIMITER $$
-  CREATE PROCEDURE artistas_addSuplementoPorCuidados(p_numAnimales tinyint)
+  CREATE PROCEDURE artistas_addSuplementoPorCuidados(p_numAnimales INT)
 
   BEGIN
       # Declaración de variables
@@ -1227,7 +1230,6 @@ USE CIRCO;
 
 call artistas_addSuplementoPorCuidados(2);
 
-call artistas_addSuplementoPorCuidados(2);
 
 ######## PREPARED STATEMENTS ###########
 
@@ -1267,13 +1269,10 @@ DELIMITER $$
 CREATE PROCEDURE animales_getListFiltroNumeroColum (p_columnas varchar(100),p_numero int)		
 BEGIN
     SET @v_consulta = CONCAT('SELECT ',p_columnas,' FROM ANIMALES LIMIT ?');	-- Añadir espacios en blanco despúes del SELECT y antes del FROM
-    SET @v_columnas = p_columnas;
     SET @v_numero = p_numero;
     PREPARE prepConsulta_animales_getListFiltroNumeroColum FROM @v_consulta;	
     EXECUTE prepConsulta_animales_getListFiltroNumeroColum USING @v_numero;
     DEALLOCATE PREPARE prepConsulta_animales_getListFiltroNumeroColum;
-
-
 END $$
 DELIMITER ;
 
@@ -1292,10 +1291,7 @@ CREATE PROCEDURE animales_getListFiltroPista (p_pistas varchar(100))
 BEGIN
 	IF (p_pistas IS NOT NULL) THEN
 		SET @v_consulta = CONCAT('SELECT * FROM ANIMALES WHERE nombre_pista IN (',p_pistas,')');
-        select @v_consulta;
-		-- SET @v_consulta = 'SELECT * FROM ANIMALES WHERE nombre_pista IN (?)';
 		PREPARE prepConsulta_animales_getListFiltroPista FROM @v_consulta;
-		-- SET @v_pistas = p_pistas;
 		EXECUTE prepConsulta_animales_getListFiltroPista;
 		DEALLOCATE PREPARE prepConsulta_animales_getListFiltroPista;
 	ELSE
@@ -1327,7 +1323,6 @@ BEGIN
      PREPARE prepareConsulta FROM @consulta;
      EXECUTE prepareConsulta;
      DEALLOCATE PREPARE prepareConsulta;
-
 END $$
 DELIMITER ;
 
