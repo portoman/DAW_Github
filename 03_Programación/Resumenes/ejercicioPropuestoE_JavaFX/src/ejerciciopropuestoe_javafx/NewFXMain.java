@@ -17,13 +17,19 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 /**
+ * Crear archivo JavaFX Main Class
+ * 
  * Añadir librería: JavaFX. Esta librería se creará con todo lo que tenga este
- * archivo: C:\Program Files\Java\javafx-sdk-19\lib Añadir en propiedades, run:
+ * archivo: C:\Program Files\Java\javafx-sdk-19\lib 
+ * 
+ * Añadir en propiedades, run:
  * --module-path "C:\Program Files\Java\javafx-sdk-19\lib" --add-modules javafx.controls,javafx.fxml 
  * 
  * En compiling: Desactivar "Compile on Save"
  *
- * Después creamos fichero fxml, que genera también el controlador.
+ * Por si acaso no está: En Opciones de Netbeans, Java, JavaFX, hay que poner la ruta de donde está el SceneBuilder: C:/Users/portb/AppData\Local\SceneBuilder
+ * 
+ * Después creamos fichero FXML y generamos también el controlador.
  * 
  * Ya podemos hacer la interfaz: En controls en la izquierda está todo.
  *  A medida que se van incluyendo componentes, se le va dando nombre y en code en la derecha: id y acciones.  Acordase de guardar

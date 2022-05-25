@@ -1,0 +1,26 @@
+# Incluyo abajo sentencias SQL de creación de la base de datos con sus tablas:
+# Mejora: Establezco la restricción UNIQUE KEY a dni_prop, para que no pueda haber clientes con el mismo DNI
+
+CREATE SCHEMA `concesionario` ;
+
+USE `concesionario`;
+
+CREATE TABLE `propietarios` (
+  `id_prop` int NOT NULL AUTO_INCREMENT,
+  `nombre_prop` varchar(100) DEFAULT NULL,
+  `dni_prop` varchar(9) DEFAULT NULL,
+  PRIMARY KEY (`id_prop`),
+  UNIQUE KEY `dni_prop_UNIQUE` (`dni_prop`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Tabla con propietarios de vehiculos';
+
+CREATE TABLE `vehiculos` (
+  `mat_veh` char(7) NOT NULL DEFAULT '""',
+  `marca_veh` varchar(50) DEFAULT '""',
+  `kms_veh` int DEFAULT NULL,
+  `precio_veh` float DEFAULT NULL,
+  `desc_veh` varchar(300) DEFAULT NULL,
+  `id_prop` int DEFAULT NULL,
+  PRIMARY KEY (`mat_veh`),
+  KEY `fk_vehi_prop_idx` (`id_prop`),
+  CONSTRAINT `fk_vehi_prop` FOREIGN KEY (`id_prop`) REFERENCES `propietarios` (`id_prop`) on delete cascade
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Tabla que contiene vehículos'

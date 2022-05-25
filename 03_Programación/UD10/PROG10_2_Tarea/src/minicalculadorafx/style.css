@@ -1,0 +1,18 @@
+.root{
+    -fx-background-color:grey;
+}
+
+Label{
+    -fx-text-fill: white;
+}
+
+Button {
+    -fx-background-color: blue;
+    -fx-font-family: "Georgia";
+    -fx-text-fill: white;
+}
+
+Button:hover {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}

@@ -5,11 +5,10 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/18" fx:controller="ejerciciopropuestoe_javafx.EjercicioPropuestoEController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ejerciciopropuestoe_javafx.EjercicioPropuestoEController">
    <children>
-      <Button fx:id="insertar" layoutX="195.0" layoutY="49.0" mnemonicParsing="false" onAction="#insertar" text="Insertar" />
-      <TextField fx:id="campo" layoutX="40.0" layoutY="49.0" />
+      <Button fx:id="insertar" layoutX="213.0" layoutY="49.0" mnemonicParsing="false" onAction="#insertar" text="Insertar" />
+      <TextField fx:id="campo" layoutX="51.0" layoutY="49.0" />
       <TextArea fx:id="listado" layoutX="51.0" layoutY="93.0" prefHeight="155.0" prefWidth="200.0" />
       <TextField fx:id="resultado" layoutX="51.0" layoutY="292.0" />
       <Button fx:id="Salir" layoutX="505.0" layoutY="280.0" mnemonicParsing="false" onAction="#salir" text="Salir" />
